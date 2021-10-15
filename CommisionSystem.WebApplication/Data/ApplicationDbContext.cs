@@ -11,6 +11,7 @@ namespace CommisionSystem.WebApplication.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            
         }
     }
 }

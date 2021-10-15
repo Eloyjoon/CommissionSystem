@@ -1,0 +1,139 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Expert Dashboard";
+}
+
+<div class="col col-12">
+    <h5 class="text-muted">
+        Expert Dashboard
+    </h5>
+</div>
+<partial name="../Shared/_LoginPartial.cshtml" />
+
+<div class="row">
+    <div class="col col-sm-12 col-md-8">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#quotes" role="tab" aria-controls="quotes" aria-selected="true">Quotes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#newQuote" role="tab" aria-controls="profile" aria-selected="false">New Quote</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#quotes" role="tab" aria-controls="quotes" aria-selected="false">Contact</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div id="quotes" class="tab-pane fade show active" role="tabpanel" aria-labelledby="quotes-tab"></div>
+            <form id="newQuote" class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab"></form>
+            <div id="quotes" class="tab-pane fade show active" role="tabpanel" aria-labelledby="quotes-tab"></div>
+        </div>        
+
+        <script>
+            $(document).ready(function () {
+                $("#form").kendoForm({
+                    validatable: { validationSummary: true },
+                    orientation: "vertical",
+                    formData: {
+                        TextBox: "John Doe",
+                        NumericTextBox: 2,
+                        MaskedTextBox: 21313,
+                        DatePicker: new Date(),
+                        DateTimePicker: new Date(),
+                        Switch: true,
+                        DropDownList: 1
+                    },
+                    items: [
+                        {
+                            field: "TextBox",
+                            label: "TextBox",
+                            validation: { required: true }
+                        },
+                        {
+                            field: "NumericTextBox",
+                            editor: "NumericTextBox",
+                            label: "NumericTextBox",
+                            validation: { required: true }
+                        },
+                        {
+                            field: "MaskedTextBox",
+                            editor: "MaskedTextBox",
+                            label: "MaskedTextBox",
+                            validation: { required: true }
+                        },
+                        {
+                            field: "DatePicker",
+                            editor: "DatePicker",
+                            label: "Date Picker:",
+                            validation: { required: true }
+                        },
+                        {
+                            field: "DateTimePicker",
+                            editor: "DateTimePicker",
+                            label: "Date Time Picker:",
+                            validation: { required: true }
+                        },
+                        {
+                            field: "Switch",
+                            editor: "Switch",
+                            label: "Switch",
+                            validation: { required: true }
+                        },
+                        {
+                            field: "DropDownList", editor: "DropDownList", label: "DropDownList", validation: { required: true }, editorOptions: {
+                                optionLabel: "Select item...",
+                                dataSource: [
+                                    { Name: "Item1", Id: 1 },
+                                    { Name: "Item2", Id: 2 }
+                                ],
+                                dataTextField: "Name",
+                                dataValueField: "Id"
+                            }
+                        }
+                    ]
+                });
+            });
+        </script>
+        <script>
+
+            $(document).ready(function () {
+                $("#quotes").kendoGrid({
+                    columns: [
+                        { width: 300, field: "ProductName", title: "Product Name" },
+                        { field: "UnitsOnOrder", title: "Units On Order" },
+                        { field: "UnitsInStock", title: "Units In Stock" }
+                    ],
+                    dataSource: {
+                        type: "odata",
+                        transport: {
+                            read: "https://demos.telerik.com/kendo-ui/service/Northwind.svc/Products"
+                        },
+                        pageSize: 10
+                    },
+                    selectable: true,
+                    toolbar: ["excel", "pdf", "search"],
+                    search: {
+                        fields: ["ProductName"]
+                    },
+                    excel: {
+                        fileName: "Kendo UI Grid Export.xlsx"
+                    },
+                    pdf: {
+                        fileName: "Kendo UI Grid Export.pdf"
+                    },
+
+                    sortable: true,
+                    pageable: true,
+
+                });
+            });
+
+        </script>
+    </div>
+</div>
+
+
+
