@@ -1,0 +1,115 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Users List";
+}
+
+<div class="col col-12">
+    <h5 class="text-muted">
+        List of users
+    </h5>
+</div>
+
+<div class="col col-sm-12">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#quotes" role="tab" aria-controls="quotes" aria-selected="true">Users</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div id="users" class="tab-pane fade show active" role="tabpanel" aria-labelledby="quotes-tab"></div>
+    </div>
+
+
+    <script type="text/x-kendo-template" id="template">
+        <div class="refreshBtnContainer">
+            <a href="https://google.com" class="k-pager-refresh k-link k-button k-button-icon" title="Refresh"><span class="k-icon k-i-reload"></span></a>
+        </div>
+        <div class="toolbar">
+            <label class="category-label" for="category">Show products by category:</label>
+            <input type="search" id="category" style="width: 150px"/>
+        </div>
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+            $("#users").kendoGrid({
+                columns: [
+                    { width: 100, field: "userID", title: "User ID" },
+                    { width: 100, field: "firstName", title: "Name" },
+                    { width: 100,  field: "lastName", title: "LastName" },
+                    { width: 100, field: "userName", title: "UserName" },
+                    { width: 100,  field: "roleName", title: "Role Name" },
+                    { width: 100, field: "status", title: "Eabled" },
+                    {
+                        command: [
+                            { text: 'Edit', iconClass: "k-icon k-i-copy", click: editUser },                            
+                            {
+                                text: "Disable", iconClass: "k-icon k-i-copy", click: function (e) {
+                                    e.preventDefault();
+                                    var dataItem = this.dataItem($(e.currentTarget).closest("tr"))["userID"];
+                                    window.location.href = "/Account/ChangeStatus/" + dataItem + "/false";
+                                }
+                            },
+                            {
+                                text: "Enable", iconClass: "k-icon k-i-copy", click: function (e) {
+                                    e.preventDefault();
+                                    var dataItem = this.dataItem($(e.currentTarget).closest("tr"))["userID"];
+                                    window.location.href = "/Account/ChangeStatus/" + dataItem + "/true";
+                                }
+                            }
+                        ]
+                        , title: "&nbsp;", width: "300px"
+                    }
+                ],
+                //editable: "popup",
+                dataSource: {
+                    transport: {
+                        read: "/API/accountapi/users",
+                    },
+                    pageSize: 20
+                },
+                selectable: true,
+                toolbar: "<button class='k-button' onclick='addUser()'><span class='k-icon k-i-plus'></span>Add New User</button>",
+                search: {
+                    fields: ["name", "code"]
+                },
+                excel: {
+                    fileName: "Brands Export.xlsx"
+                },
+                pdf: {
+                    fileName: "Brands Export.pdf"
+                },
+
+                sortable: true,
+                pageable: true,
+
+            });
+        });
+
+        function addUser() {
+
+            window.location.href = "/Account/createuser/";
+        }
+
+        function editUser(e) {
+            e.preventDefault();
+            var dataItem = this.dataItem($(e.currentTarget).closest("tr"))["userID"];
+            //console.log(dataItem);
+            window.location.href = "/Account/Login/" + dataItem;
+        }
+
+    </script>
+</div>
+
+
+
+
+
+
+
+
+

@@ -5,19 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CommisionSystem</title>
 
+    <partial name="_BootstrapPartial.cshtml" />
+
     @*StyleSheets*@
     <link href="~/lib/kendo/css/kendo.bootstrap-v4.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.1.0/css/all.css" integrity="sha512-ajhUYg8JAATDFejqbeN7KbF2zyPbbqz04dgOLyGcYEk/MJD3V+HJhJLKvJ2VVlqrr4PwHeGTTWxbI+8teA7snw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/css/sidebars.css" />
     @*StyleSheets*@
 
     @*Scripts*@
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="~/lib/kendo/js/angular.min.js"></script>
     <script src="~/lib/kendo/js/jszip.min.js"></script>
     <script src="~/lib/kendo/js/kendo.all.min.js"></script>
@@ -27,8 +24,6 @@
 
 </head>
 <body>
-
-
     <div class="page-wrapper chiller-theme toggled">
         <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
             <i class="fas fa-bars"></i>
@@ -48,10 +43,14 @@
                     </div>
                     <div class="user-info">
                         <span class="user-name">
-                            Alireza
-                            <strong>Sabouei</strong>
+                            @{ 
+                                var firstName = this.User.Claims.ToList()[1].Value;
+                                var lastName = this.User.Claims.ToList()[2].Value;
+                            }
+                            @firstName
+                            <strong>@lastName</strong>
                         </span>
-                        <span class="user-role">Expert</span>
+                        <span class="user-role">@this.User.Claims.First(a => a.Type == "RoleName").Value</span>
                         <span class="user-status">
                             <i class="fa fa-circle"></i>
                             <span>Online</span>
@@ -86,8 +85,8 @@
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li>
-                                        <a href="#">
-                                            Dashboard 1
+                                        <a href="~/Dashboard/Expert">
+                                            My Dashboard
                                             <span class="badge badge-pill badge-success">Pro</span>
                                         </a>
                                     </li>
@@ -103,15 +102,14 @@
                         <li class="sidebar-dropdown">
                             <a href="#">
                                 <i class="fa fa-shopping-cart"></i>
-                                <span>E-commerce</span>
+                                <span>Products</span>
                                 <span class="badge badge-pill badge-danger">3</span>
                             </a>
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li>
-                                        <a href="#">
-                                            Products
-
+                                        <a href="~/Product/List">
+                                            List
                                         </a>
                                     </li>
                                     <li>
@@ -126,25 +124,14 @@
                         <li class="sidebar-dropdown">
                             <a href="#">
                                 <i class="far fa-gem"></i>
-                                <span>Components</span>
+                                <span>Brands</span>
                             </a>
                             <div class="sidebar-submenu">
                                 <ul>
                                     <li>
-                                        <a href="#">General</a>
+                                        <a href="~/Brand/List">List</a>
                                     </li>
-                                    <li>
-                                        <a href="#">Panels</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Tables</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Icons</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Forms</a>
-                                    </li>
+
                                 </ul>
                             </div>
                         </li>
@@ -186,28 +173,56 @@
                                 </ul>
                             </div>
                         </li>
-                        <li class="header-menu">
-                            <span>Extra</span>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-book"></i>
-                                <span>Documentation</span>
-                                <span class="badge badge-pill badge-primary">Beta</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-calendar"></i>
-                                <span>Calendar</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-folder"></i>
-                                <span>Examples</span>
-                            </a>
-                        </li>
+
+
+                        @if (this.User.Claims.First(a=>a.Type=="AccessLevel").Value=="4")
+                        {
+
+                            @*Super Admin*@
+                            <li class="header-menu">
+                                <span>Extra</span>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#">
+                                    <i class="fa fa-user"></i>
+                                    <span>Users</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="~/Account/List">List</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Open street map</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-book"></i>
+                                    <span>Documentation</span>
+                                    <span class="badge badge-pill badge-primary">Beta</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-calendar"></i>
+                                    <span>Calendar</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-folder"></i>
+                                    <span>Examples</span>
+                                </a>
+                            </li>
+                            @*Super Admin*@
+                        }
+
+
+
+
                     </ul>
                 </div>
                 <!-- sidebar-menu  -->
@@ -226,7 +241,7 @@
                     <i class="fa fa-cog"></i>
                     <span class="badge-sonar"></span>
                 </a>
-                <a href="#">
+                <a href="~/Account/LogOut">
                     <i class="fa fa-power-off"></i>
                 </a>
             </div>
@@ -234,10 +249,11 @@
         <!-- sidebar-wrapper  -->
         <main class="page-content">
             <div class="container-fluid">
-                <div class="row">
-                    @RenderBody()
-                </div>              
-
+               
+                    <div class="row">
+                        @RenderBody()
+                    </div>
+               
                 <footer class="text-center">
                     @*<div class="mb-2">
                         <small>

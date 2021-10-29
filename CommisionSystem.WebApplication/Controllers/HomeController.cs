@@ -1,4 +1,5 @@
-﻿using CommisionSystem.WebApplication.Models;
+﻿using CommisionSystem.WebApplication.Data;
+using CommisionSystem.WebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -27,6 +28,12 @@ namespace CommisionSystem.WebApplication.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpPost]
+        public IActionResult Test(User user)
+        {
+            return View();
         }
     }
 }

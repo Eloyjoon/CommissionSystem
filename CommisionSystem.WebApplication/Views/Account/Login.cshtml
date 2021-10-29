@@ -1,0 +1,49 @@
+﻿@{
+    Layout = "_LayoutSimple";
+}
+@section CSS {
+    <link rel="stylesheet" href="~/css/login.css" />
+}
+@section Java {
+
+}
+
+@model LoginModel
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+        <!-- Icon -->
+        <div class="fadeIn first">
+            <img src="/img/Logo.png" id="icon" alt="User Icon" />
+        </div>
+
+        <!-- Login Form -->
+        <form method="post">
+            <input type="text" id="login" class="fadeIn second" name="username" placeholder="login">
+            <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
+            <input type="submit" class="fadeIn fourth" value="Log In">
+        </form>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @Html.ValidationSummary()
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+            <a class="underlineHover" href="#">Forgot Password?</a>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
