@@ -22,6 +22,7 @@ namespace CommisionSystem.WebApplication.Data
         public int RoleID { get; set; }
         public Role Role { get; set; }        
         public User Supervisor { get; set; }
+        public ICollection<Policy> UserPolicies { get; set; }
 
     }
 }

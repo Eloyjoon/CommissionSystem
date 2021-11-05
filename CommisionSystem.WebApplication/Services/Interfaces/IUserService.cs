@@ -10,6 +10,7 @@ namespace CommisionSystem.WebApplication.Services.Interfaces
     public interface IUserService
     {
         Task<List<ReadUserModel>> ListOfUsers();
+        Task<List<ReadPolicyModel>> ListOfPolicies();
         Task<User> GetUser(string username, string password);
         Task CreateUser(CreateUserModel input);
         Task<IEnumerable<Role>> ListOfRoles();

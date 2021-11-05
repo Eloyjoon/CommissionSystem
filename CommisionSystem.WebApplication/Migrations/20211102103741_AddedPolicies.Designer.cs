@@ -4,14 +4,16 @@ using CommisionSystem.WebApplication.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CommisionSystem.WebApplication.Migrations
 {
     [DbContext(typeof(CommisionContext))]
-    partial class CommisionContextModelSnapshot : ModelSnapshot
+    [Migration("20211102103741_AddedPolicies")]
+    partial class AddedPolicies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,12 +34,7 @@ namespace CommisionSystem.WebApplication.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("Policies");
 
@@ -241,51 +238,6 @@ namespace CommisionSystem.WebApplication.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("UserPolicies");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            PolicyID = 1,
-                            UserID = 1
-                        },
-                        new
-                        {
-                            ID = 2,
-                            PolicyID = 2,
-                            UserID = 1
-                        },
-                        new
-                        {
-                            ID = 3,
-                            PolicyID = 3,
-                            UserID = 1
-                        },
-                        new
-                        {
-                            ID = 4,
-                            PolicyID = 4,
-                            UserID = 1
-                        },
-                        new
-                        {
-                            ID = 5,
-                            PolicyID = 5,
-                            UserID = 1
-                        },
-                        new
-                        {
-                            ID = 6,
-                            PolicyID = 6,
-                            UserID = 1
-                        });
-                });
-
-            modelBuilder.Entity("CommisionSystem.WebApplication.Data.Policy", b =>
-                {
-                    b.HasOne("CommisionSystem.WebApplication.Data.User", null)
-                        .WithMany("UserPolicies")
-                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("CommisionSystem.WebApplication.Data.RolePolicy", b =>
@@ -340,11 +292,6 @@ namespace CommisionSystem.WebApplication.Migrations
                     b.Navigation("RolePolicies");
 
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("CommisionSystem.WebApplication.Data.User", b =>
-                {
-                    b.Navigation("UserPolicies");
                 });
 #pragma warning restore 612, 618
         }

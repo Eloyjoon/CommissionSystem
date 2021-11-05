@@ -18,5 +18,6 @@ namespace CommisionSystem.WebApplication.Models.ViewModels
         public string Password { get; set; }
         [Required]
         public int RoleID { get; set; }
+        public ICollection<ReadPolicyModel> UserPolicies { get; set; }
     }
 }

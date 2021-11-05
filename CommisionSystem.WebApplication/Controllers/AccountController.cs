@@ -96,7 +96,10 @@ namespace CommisionSystem.WebApplication.Controllers
 
             }).AsEnumerable();
 
+            var policies = (await _userService.ListOfPolicies()).OrderBy(a=>a.Title).AsEnumerable();
+
             ViewBag.Roles = roles;
+            ViewBag.Policies = policies;
 
             return View();
         }

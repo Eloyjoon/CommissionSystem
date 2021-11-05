@@ -33,6 +33,20 @@ namespace CommisionSystem.WebApplication.Services.Concretes
 
             return result.Select(a=>a.ToReadUserModel()).ToList();
         }
+
+        public async Task<List<ReadPolicyModel>> ListOfPolicies()
+        {
+            var result = await commisionContext.Policies
+                .ToListAsync();
+
+            return result
+                .Select(a => new ReadPolicyModel() 
+                    { 
+                        PolicyID=a.ID,
+                        Title=a.DisplayName
+                    }
+                ).ToList();
+        }
         public async Task CreateUser(CreateUserModel input)
         {
             try

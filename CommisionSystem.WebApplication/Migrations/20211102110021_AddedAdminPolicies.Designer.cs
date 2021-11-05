@@ -4,14 +4,16 @@ using CommisionSystem.WebApplication.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CommisionSystem.WebApplication.Migrations
 {
     [DbContext(typeof(CommisionContext))]
-    partial class CommisionContextModelSnapshot : ModelSnapshot
+    [Migration("20211102110021_AddedAdminPolicies")]
+    partial class AddedAdminPolicies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

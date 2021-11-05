@@ -7,6 +7,8 @@ namespace CommisionSystem.WebApplication.Models.ViewModels
 {
     public class ReadPolicyModel
     {
-        public string Policies { get; set; }
+        public int PolicyID { get; set; }
+        public string Title { get; set; }
+        public string Name => Title.Replace(" ", "");
     }
 }
