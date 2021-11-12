@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using CommisionSystem.WebApplication.Models;
+using AutoMapper;
+using CommissionSystem.Services.Interfaces;
+using CommissionSystem.WebApplication.Models;
+using CommissionSystem.WebApplication.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CommisionSystem.WebApplication.API
+namespace CommissionSystem.WebApplication.API
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountApiController : ControllerBase
+    public class AccountApiController : BaseApiController
     {
-        private readonly Services.Interfaces.IUserService _userService;
+        private readonly IUserService _userService;
 
-        public AccountApiController(Services.Interfaces.IUserService userService)
+        public AccountApiController(IUserService userService,IMapper mapper):base(mapper)
         {
             _userService = userService;
         }
@@ -31,13 +34,14 @@ namespace CommisionSystem.WebApplication.API
             }
 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.FirstName));
-            identity.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
-            identity.AddClaim(new Claim(ClaimTypes.Role, user.Role.ID.ToString()));
-            identity.AddClaim(new Claim("RoleName", user.Role.RoleName));
-            identity.AddClaim(new Claim("HasAccessToProductSearchReport", user.HasAccessToProductSearchReport.ToString()));
+            identity.AddClaim(new Claim("UserID", user.ID.ToString()));
+            identity.AddClaim(new Claim("FirstName", user.FirstName));
+            identity.AddClaim(new Claim("LastName", user.LastName));
+            identity.AddClaim(new Claim("RoleName", user.Role.Name));
+            identity.AddClaim(new Claim("AccessLevel", user.Role.AccessLevel.ToString()));
 
+            identity.AddClaim(new Claim("ExpertDashboard", ""));
+            identity.AddClaim(new Claim("ReadProducts", ""));
 
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
@@ -53,12 +57,12 @@ namespace CommisionSystem.WebApplication.API
         }
 
         [HttpGet("Users")]
-        
+
         public async Task<IActionResult> ListOfUsers()
         {
             var result = await _userService.ListOfUsers();
 
-            return Ok(result);
+            return Ok(mapper.Map<IEnumerable<ReadUserModel>>(result));
         }
     }
 }

@@ -73,9 +73,9 @@
                     pageSize: 20
                 },
                 selectable: true,
-                toolbar: "<button class='k-button' onclick='addUser()'><span class='k-icon k-i-plus'></span>Add New User</button>",
+                toolbar: ["search","<button class='k-button' onclick='addUser()'><span class='k-icon k-i-plus'></span>Add New User</button>","<button class='k-button' onclick='addUser()'><span class='k-icon k-i-plus'></span>Sync From Active Directory</button>"],
                 search: {
-                    fields: ["name", "code"]
+                    fields: ["firstName", "lastName", "userName","roleName","status"]
                 },
                 excel: {
                     fileName: "Brands Export.xlsx"
@@ -95,11 +95,16 @@
             window.location.href = "/Account/createuser/";
         }
 
+        function syncUser() {
+
+            window.location.href = "/Account/syncUsers/";
+        }
+
         function editUser(e) {
             e.preventDefault();
             var dataItem = this.dataItem($(e.currentTarget).closest("tr"))["userID"];
-            //console.log(dataItem);
-            window.location.href = "/Account/Login/" + dataItem;
+            console.log(dataItem);
+            window.location.href = "/Account/EditUser/" + dataItem;
         }
 
     </script>

@@ -1,0 +1,102 @@
+﻿@model CommissionSystem.WebApplication.Models.ViewModels.EditUserModel
+
+@{
+    ViewData["Title"] = "Edit User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col col-12">
+    <h5 class="text-muted">
+        Edit user @Model.UserName
+    </h5>
+    <div>
+        <a asp-controller="Account" asp-action="List">Back to List</a>
+    </div>
+    <hr />
+</div>
+
+<div class="col col-sm-12 col-md-8">
+    <div id="createUser" class="tab-pane fade show active" role="tabpanel" aria-labelledby="quotes-tab">
+
+
+        <form asp-action="EditUser">
+            <div class="form-row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @Html.HiddenFor(a => a.UserID)
+                <div class="form-group col-md-6">
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="UserName" class="control-label"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="RoleID" class="control-label"></label>
+                    <select asp-for="RoleID" class="form-control" asp-items="ViewBag.Roles"></select>
+                </div>
+                <label class="control-label col-md-12">Policies</label>
+
+                <div class="form-group col-md-12">
+                    @{
+                        var listOfUserPolicies = Model.Policy.ToList();
+                        foreach (var policy in ViewBag.Policies)
+                        {
+                            string test = "";
+                            if (listOfUserPolicies.Any(a => a == policy.ID.ToString())) { test = "checked"; }
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id=@policy.Name name="policy" value="@policy.ID" @test>
+                                <label class="form-check-label" for=@policy.Name>@policy.Title</label>
+                            </div>
+                        }
+                    }
+                </div>
+                <label class="control-label col-md-12">Brands</label>
+                <div class="form-group col-md-12">
+                    @{
+                        var listOfUserBrands = Model.Brand.ToList();
+                        foreach (var brand in ViewBag.Brands)
+                        {
+                            string test = "";
+                            if (listOfUserBrands.Any(a => a == brand.ID.ToString())) { test = "checked"; }
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id=@brand.Name name="brand" value="@brand.ID"  @test>
+                                <label class="form-check-label" for=@brand.Name>@brand.Title</label>
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+
+
+
+        <script>
+        var form = $("#form").data("kendoForm");
+
+
+        </script>
+    </div>
+
+
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

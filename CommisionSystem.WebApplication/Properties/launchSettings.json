@@ -11,12 +11,12 @@
     "IIS Express": {
         "commandName": "IISExpress",
         "launchBrowser": true,
-        "launchUrl": "http://localhost:46721/dashboard/expert",
+        "launchUrl": "http://localhost:46721",
         "environmentVariables": {
             "ASPNETCORE_ENVIRONMENT": "Development"
         }
     },
-    "CommisionSystem.WebApplication": {
+    "CommissionSystem.WebApplication": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

@@ -1,6 +1,6 @@
 using System;
 
-namespace CommisionSystem.WebApplication.Models
+namespace CommissionSystem.WebApplication.Models
 {
     public class ErrorViewModel
     {

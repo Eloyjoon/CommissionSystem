@@ -7,7 +7,7 @@
 }
 
 @inject IJsonHelper Json;
-@model List<CommisionSystem.WebApplication.Models.ViewModels.ReadBrandModel>
+@model List<CommissionSystem.WebApplication.Models.ViewModels.ReadBrandModel>
 
 <div class="col col-12">
     <h5 class="text-muted">
@@ -15,7 +15,7 @@
     </h5>
 </div>
 
-<div class="col col-sm-12>
+<div class="col col-sm-12"">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#quotes" role="tab" aria-controls="quotes" aria-selected="true">Products</a>
@@ -30,7 +30,7 @@
                 $("#brands").kendoGrid({
                     columns: [
                         { width: 300, field: "id", title: "Brand ID" },
-                        { field: "name", title: "Name" },
+                        { field: "title", title: "Name" },
                         //{ field: "code", title: "Extra In" },
                         //{ field: "unitsInStock", title: "Units In Stock" }
                     ],
@@ -44,7 +44,7 @@
                     selectable: true,
                     toolbar: ["excel", "pdf", "search"],
                     search: {
-                        fields: ["name","code"]
+                        fields: ["title","code"]
                     },
                     excel: {
                         fileName: "Brands Export.xlsx"

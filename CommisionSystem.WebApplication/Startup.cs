@@ -1,27 +1,19 @@
-using CommisionSystem.WebApplication.Data.Sepidar;
-using CommisionSystem.WebApplication.Models;
-using CommisionSystem.WebApplication.Services.Concretes;
+
+using AutoMapper;
+using CommissionSystem.Data;
+using CommissionSystem.Data.Sepidar;
+using CommissionSystem.Services.Concretes;
+using CommissionSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+using System.Reflection;
 
-namespace CommisionSystem.WebApplication
+namespace CommissionSystem.WebApplication
 {
     public class Startup
     {
@@ -38,6 +30,7 @@ namespace CommisionSystem.WebApplication
             //Enable cookie authentication
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie();
+
             services.AddHttpContextAccessor();
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 
@@ -46,29 +39,27 @@ namespace CommisionSystem.WebApplication
 
             #region Injection
 
-            services.AddTransient<Services.Interfaces.IUserService, UserService>();
-            services.AddTransient<Services.Interfaces.IProductService, ProductService>();
-            services.AddTransient<Services.Interfaces.IBrandService, BrandService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IBrandService, BrandService>();
 
             #endregion
 
-
-
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("4", policy => policy.RequireClaim("4"));
-
-                options.AddPolicy("ExpertDashboardPolicy", policy => policy.RequireClaim("ExpertDashboard"));
-                options.AddPolicy("ReadProductsPolicy", policy => policy.RequireClaim("ReadProducts"));
+                options.AddPolicy("Dashboard", policy => policy.RequireClaim("Dashboard"));
+                options.AddPolicy("ReadProducts", policy => policy.RequireClaim("ReadProducts"));
+                // options.AddPolicy("ExpertDashboardPolicy", policy => policy.RequireClaim("ExpertDashboard"));
+                // options.AddPolicy("ReadProductsPolicy", policy => policy.RequireClaim("ReadProducts"));
             });
 
-            services.AddDbContext<Data.CommisionContext>(
+            services.AddDbContext<CommisionContext>(
                 options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
 
 
             services.AddDbContext<SepidarContext>(
                 options => options.UseSqlServer("name=ConnectionStrings:SepidarConnection",
-            sqlServerOptions => sqlServerOptions.CommandTimeout(600))
+            sqlServerOptions => sqlServerOptions.CommandTimeout(1000))
             );
 
             services.AddRazorPages()
@@ -79,9 +70,16 @@ namespace CommisionSystem.WebApplication
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen();
-           // services.AddMvcCore().AddNewtonsoftJson(x => x.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.All);
-            // services.AddControllers().AddJsonOptions(x=>x.JsonSerializerOptions.ReferenceHandler= ReferenceHandler.Preserve);
-            // services.AddControllers().AddJsonOptions(x=>x.JsonSerializerOptions.WriteIndented=true);
+
+            #region AutoMapper
+
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(Mappings)),Assembly.GetAssembly(typeof(Services.Mappings)));
+            // services.AddAutoMapper(typeof(Startup));
+            services.AddControllersWithViews();
+
+
+
+            #endregion
 
         }
 
@@ -120,6 +118,11 @@ namespace CommisionSystem.WebApplication
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
             app.UseSwaggerUI();
+
+            DefaultFilesOptions options = new DefaultFilesOptions();
+            options.DefaultFileNames.Clear();
+            options.DefaultFileNames.Add("/brand/list");
+            app.UseDefaultFiles(options);
         }
     }
 }

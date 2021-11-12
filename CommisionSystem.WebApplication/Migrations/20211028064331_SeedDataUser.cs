@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CommisionSystem.WebApplication.Migrations
+namespace CommissionSystem.WebApplication.Migrations
 {
     public partial class SeedDataUser : Migration
     {

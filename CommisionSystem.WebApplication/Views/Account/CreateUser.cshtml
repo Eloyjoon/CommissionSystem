@@ -1,4 +1,4 @@
-﻿@model CommisionSystem.WebApplication.Models.ViewModels.CreateUserModel
+﻿@model CommissionSystem.WebApplication.Models.ViewModels.CreateUserModel
 
 @{
     ViewData["Title"] = "CreateUser";
@@ -47,15 +47,26 @@
                         <select asp-for="RoleID" class="form-control" asp-items="ViewBag.Roles"></select>
                     </div>
                     <label class="control-label col-md-12">Policies</label>
-                    
-                    <div class="form-group col-md-12">
 
+                    <div class="form-group col-md-12">
                         @{
                             foreach (var policy in ViewBag.Policies)
                             {
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id=@policy.Name value="@policy.PolicyID">
+                                    <input class="form-check-input" type="checkbox" id=@policy.Name name="policy" value="@policy.ID">
                                     <label class="form-check-label" for=@policy.Name>@policy.Title</label>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <label class="control-label col-md-12">Brands</label>
+                    <div class="form-group col-md-12">
+                        @{
+                            foreach (var brand in ViewBag.Brands)
+                            {
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id=@brand.Name name="brand" value="@brand.ID" checked>
+                                    <label class="form-check-label" for=@brand.Name>@brand.Title</label>
                                 </div>
                             }
                         }

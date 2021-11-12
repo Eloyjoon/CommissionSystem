@@ -2,31 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CommisionSystem.WebApplication.Models.ViewModels;
-using CommisionSystem.WebApplication.Services.Interfaces;
+using CommissionSystem.WebApplication.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CommisionSystem.WebApplication.Controllers
+namespace CommissionSystem.WebApplication.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductService productService;
-
-        public ProductController(IProductService productService)
-        {
-            this.productService = productService;
-        }
-        [Authorize]
+        [Authorize(Policy = "ReadProducts")]
         [HttpGet]
         public IActionResult List()
         {
-            var list= this.productService
-                .ListOfProducts()
-                .Select(a=>a.ToReadProductModel())
-                .ToList();
-
-            return View(list);
+            return View();
         }
     }
 }

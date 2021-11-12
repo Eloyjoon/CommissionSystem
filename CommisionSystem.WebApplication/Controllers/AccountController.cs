@@ -1,25 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using CommisionSystem.WebApplication.Models;
-using CommisionSystem.WebApplication.Models.ViewModels;
+using AutoMapper;
+using CommissionSystem.WebApplication.Models.ViewModels;
+using CommissionSystem.Services.Interfaces;
+using CommissionSystem.WebApplication.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace CommisionSystem.WebApplication.Controllers
+namespace CommissionSystem.WebApplication.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
-        private readonly Services.Interfaces.IUserService _userService;
+        private readonly IUserService _userService;
+        private readonly IBrandService _brandService;
 
-        public AccountController(Services.Interfaces.IUserService userService)
+        public AccountController(IUserService userService, IBrandService brandService, IMapper mapper) : base(mapper)
         {
             _userService = userService;
+            _brandService = brandService;
         }
 
         [HttpGet]
@@ -31,40 +35,57 @@ namespace CommisionSystem.WebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)
         {
-            var user = await _userService.GetUser(loginModel.UserName,loginModel.Password);
+            var user = await _userService.Exist(loginModel.UserName);
+
             if (user == null)
             {
                 ModelState.AddModelError("", "User not found");
                 return View(loginModel);
             }
-            if (!user.Status)
+
+            if (user.Role.Name.ToLower().Contains("super"))//Super Admin
             {
-                ModelState.AddModelError("", "Account is disabled. Call the admin.");
-                return View(loginModel);
+                user = await _userService.GetUser(loginModel.UserName, loginModel.Password);
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "Username and password not match");
+                    return View(loginModel);
+                }
+                if (!user.Status)
+                {
+                    ModelState.AddModelError("", "Account is disabled. Call the admin.");
+                    return View(loginModel);
+                }
+            }
+            else
+            {
+                PrincipalContext pc = new PrincipalContext(ContextType.Domain, "hurmengroup.local");
+                bool valid = pc.ValidateCredentials(loginModel.UserName, loginModel.Password);
+                if (!valid)
+                {
+                    ModelState.AddModelError("", "Username and password not match");
+                    return View(loginModel);
+                }
             }
 
             var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.ID.ToString()));
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.FirstName));
-            identity.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
-            identity.AddClaim(new Claim("RoleName", user.Role.RoleName));
+            identity.AddClaim(new Claim("UserID", user.ID.ToString()));
+            identity.AddClaim(new Claim("FirstName", user.FirstName));
+            identity.AddClaim(new Claim("LastName", user.LastName));
+            identity.AddClaim(new Claim("RoleName", user.Role.Name));
             identity.AddClaim(new Claim("AccessLevel", user.Role.AccessLevel.ToString()));
-
-
-            identity.AddClaim(new Claim("ExpertDashboard", ""));
-            identity.AddClaim(new Claim("ReadProducts",""));
-            
-
-            identity.AddClaim(new Claim("HasAccessToProductSearchReport", user.HasAccessToProductSearchReport.ToString()));
-
+            foreach (var item in user.Policies)
+            {
+                identity.AddClaim(new Claim(item.Name, "true"));
+            }
 
             var principal = new ClaimsPrincipal(identity);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            if(string.IsNullOrEmpty(loginModel.ReturnUrl))
+            if (string.IsNullOrEmpty(loginModel.ReturnUrl))
                 return RedirectToAction("Expert", "Dashboard");
             else
-                return Redirect(loginModel.ReturnUrl);            
+                return Redirect(loginModel.ReturnUrl);
         }
 
         public async Task<IActionResult> Logout()
@@ -90,36 +111,130 @@ namespace CommisionSystem.WebApplication.Controllers
         {
             var roles = (await _userService.ListOfRoles()).Select(a => new SelectListItem()
             {
-                Text = a.RoleName,
+                Text = a.Name,
                 Value = a.ID.ToString(),
                 Selected = false
 
             }).AsEnumerable();
 
-            var policies = (await _userService.ListOfPolicies()).OrderBy(a=>a.Title).AsEnumerable();
+            var policies = (await _userService.ListOfPolicies())
+                .OrderBy(a => a.Name);
+
+            var brands = (await _brandService.ListOfBrands())
+                .OrderBy(x => x.Name);
 
             ViewBag.Roles = roles;
-            ViewBag.Policies = policies;
+            ViewBag.Policies = mapper.Map<IOrderedEnumerable<ReadPolicyModel>>(policies);
+            ViewBag.Brands = mapper.Map<IOrderedEnumerable<ReadBrandModel>>(brands); ;
 
             return View();
         }
 
         [HttpPost]
-        public IActionResult CreateUser(CreateUserModel input)
+        public async Task<IActionResult> CreateUser(CreateUserModel input)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return View(input);
             }
 
-            _userService.CreateUser(input);
+            var user = mapper.Map<Entities.User>(input);
+            var selectedBrandsList = input.Brand.Select(a => Convert.ToInt32(a)).ToList();
+            var selectedPoliciesList = input.Policy.Select(a => Convert.ToInt32(a)).ToList();
+
+            await _userService.CreateUser(user, selectedPoliciesList, selectedBrandsList);
+
+            return Redirect("/account/list");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(int id)
+        {
+            var roles = (await _userService.ListOfRoles()).Select(a => new SelectListItem()
+            {
+                Text = a.Name,
+                Value = a.ID.ToString(),
+                Selected = false
+
+            }).AsEnumerable();
+
+            var policies = (await _userService.ListOfPolicies())
+                .OrderBy(a => a.DisplayName);
+
+            var brands = (await _brandService.ListOfBrands())
+                .OrderBy(x => x.Name);
+
+            ViewBag.Roles = roles;
+            ViewBag.Policies = mapper.Map<IOrderedEnumerable<ReadPolicyModel>>(policies);
+            ViewBag.Brands = mapper.Map<IOrderedEnumerable<ReadBrandModel>>(brands); ;
+
+            var user = await _userService.GetUser(id);
+
+            var userBrands = (await _userService.GetUserBrands(id))
+                .Select(a=>a.ID.ToString())
+                .ToArray();
+
+            var userPolicies = (await _userService.GetUserPolicy(id))
+                .Select(a => a.ID.ToString())
+                .ToArray();
+
+            var result = new EditUserModel(user, userPolicies, userBrands);
+
+            return View(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserModel editUserModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(editUserModel);
+            }
+
+            if (editUserModel.Policy == null)
+                editUserModel.Policy = Array.Empty<string>();
+
+            if (editUserModel.Brand == null)
+                editUserModel.Brand = Array.Empty<string>();
+
+            var roles = (await _userService.ListOfRoles()).Select(a => new SelectListItem()
+            {
+                Text = a.Name,
+                Value = a.ID.ToString(),
+                Selected = false
+
+            }).AsEnumerable();
+
+            var policies = (await _userService.ListOfPolicies())
+                .OrderBy(a => a.Name); ;
+
+            var brands = (await _brandService.ListOfBrands())
+                .OrderBy(x => x.Name);
+
+            ViewBag.Roles = roles ;
+            ViewBag.Policies = mapper.Map<IOrderedEnumerable<ReadPolicyModel>>(policies);
+            ViewBag.Brands = mapper.Map<IOrderedEnumerable<ReadBrandModel>>(brands);
+
+            var user = mapper.Map<Entities.User>(editUserModel);
+            var selectedBrandsList = editUserModel.Brand.Select(a => Convert.ToInt32(a)).ToList();
+            var selectedPoliciesList = editUserModel.Policy.Select(a => Convert.ToInt32(a)).ToList();
+
+            await _userService.EditUser(user, selectedBrandsList, selectedPoliciesList);
+
+            return Redirect("/account/list");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SyncUsers()
+        {
+            await _userService.SyncUsers();
 
             return Redirect("/account/list");
         }
 
         [HttpGet]
         [Route("/account/ChangeStatus/{userID}/{enabled}")]
-        public async Task<IActionResult> ChangeStatus(int userID,bool enabled)
+        public async Task<IActionResult> ChangeStatus(int userID, bool enabled)
         {
             try
             {

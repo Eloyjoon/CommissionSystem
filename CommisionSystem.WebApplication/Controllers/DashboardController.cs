@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CommisionSystem.WebApplication.Controllers
+namespace CommissionSystem.WebApplication.Controllers
 {
     public class DashboardController : Controller
     {
-        [Authorize(Policy ="ExpertDashboardPolicy")]
+        [Authorize(Policy = "Dashboard")]
         public IActionResult Expert()
         {
             return View();

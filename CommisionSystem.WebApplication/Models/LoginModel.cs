@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CommisionSystem.WebApplication.Models
+namespace CommissionSystem.WebApplication.Models
 {
     public class LoginModel
     {

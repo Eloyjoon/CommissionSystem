@@ -7,7 +7,7 @@
 }
 
 @inject IJsonHelper Json;
-@model List<CommisionSystem.WebApplication.Models.ViewModels.ReadProductModel>
+@model List<CommissionSystem.WebApplication.Models.ViewModels.ReadProductModel>
 
 <div class="col col-12">
     <h5 class="text-muted">
@@ -30,13 +30,13 @@
                 $("#products").kendoGrid({
                     columns: [
                         { width: 300, field: "productName", title: "Product Name" },
-                        { field: "code", title: "Code" },
-                        { field: "brand", title: "Brand" },
-                        { field: "unitsInStock", title: "Units In Stock" },
-                        { field: "price", title: "Price" },
-                        { field: "currency", title: "Currency" },
-                        { field: "priceInRials", title: "Price In Rials" },
-                        { field: "lastUpdate", title: "Last Currency Update" },
+                        { width: 300, field: "code", title: "Code" },
+                        { width: 300, field: "brand", title: "Brand" },
+                        { width: 300, field: "unitsInStock", title: "Units In Stock" },
+                        { width: 300, field: "price", title: "Price" },
+                        { width: 300, field: "currency", title: "Currency" },
+                        { width: 300, field: "priceInRials", title: "Price In Rials" },
+                        { width: 300, field: "lastUpdate", title: "Last Currency Update" },
 
                     ],
                     dataSource: {
@@ -44,9 +44,12 @@
                         transport: {
                             read: "/API/Product"
                         },
-                        pageSize: 10
+                        pageSize: 20
                     },
                     selectable: true,
+                    //scrollable: {
+                    //    endless: true
+                    //},
                     toolbar: ["excel", "pdf", "search"],
                     search: {
                         fields: ["productName","code"]

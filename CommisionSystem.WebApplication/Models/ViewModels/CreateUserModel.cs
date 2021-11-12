@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CommisionSystem.WebApplication.Models.ViewModels
+namespace CommissionSystem.WebApplication.Models.ViewModels
 {
     public class CreateUserModel
     {
@@ -18,6 +18,7 @@ namespace CommisionSystem.WebApplication.Models.ViewModels
         public string Password { get; set; }
         [Required]
         public int RoleID { get; set; }
-        public ICollection<ReadPolicyModel> UserPolicies { get; set; }
+        public string[] Policy { get; set; }
+        public string[] Brand { get; set; }
     }
 }
