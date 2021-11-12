@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace CommissionSystem.WebApplication.Controllers
 {
@@ -118,14 +119,16 @@ namespace CommissionSystem.WebApplication.Controllers
             }).AsEnumerable();
 
             var policies = (await _userService.ListOfPolicies())
-                .OrderBy(a => a.Name);
+                .OrderBy(a => a.Name)
+                .ToList();
 
             var brands = (await _brandService.ListOfBrands())
-                .OrderBy(x => x.Name);
+                .OrderBy(x => x.Name)
+                .ToList();
 
             ViewBag.Roles = roles;
-            ViewBag.Policies = mapper.Map<IOrderedEnumerable<ReadPolicyModel>>(policies);
-            ViewBag.Brands = mapper.Map<IOrderedEnumerable<ReadBrandModel>>(brands); ;
+            ViewBag.Policies = mapper.Map<List<ReadPolicyModel>>(policies);
+            ViewBag.Brands = mapper.Map<List<ReadBrandModel>>(brands); ;
 
             return View();
         }
@@ -159,14 +162,16 @@ namespace CommissionSystem.WebApplication.Controllers
             }).AsEnumerable();
 
             var policies = (await _userService.ListOfPolicies())
-                .OrderBy(a => a.DisplayName);
+                .OrderBy(a => a.DisplayName)
+                .ToList();
 
             var brands = (await _brandService.ListOfBrands())
-                .OrderBy(x => x.Name);
+                .OrderBy(x => x.Name)
+                .ToList();
 
             ViewBag.Roles = roles;
-            ViewBag.Policies = mapper.Map<IOrderedEnumerable<ReadPolicyModel>>(policies);
-            ViewBag.Brands = mapper.Map<IOrderedEnumerable<ReadBrandModel>>(brands); ;
+            ViewBag.Policies = mapper.Map<List<ReadPolicyModel>>(policies);
+            ViewBag.Brands = mapper.Map<List<ReadBrandModel>>(brands); ;
 
             var user = await _userService.GetUser(id);
 
@@ -186,6 +191,26 @@ namespace CommissionSystem.WebApplication.Controllers
         [HttpPost]
         public async Task<IActionResult> EditUser(EditUserModel editUserModel)
         {
+            var roles = (await _userService.ListOfRoles()).Select(a => new SelectListItem()
+            {
+                Text = a.Name,
+                Value = a.ID.ToString(),
+                Selected = false
+
+            }).AsEnumerable();
+
+            var policies = (await _userService.ListOfPolicies())
+                .OrderBy(a => a.Name)
+                .ToList();
+
+            var brands = (await _brandService.ListOfBrands())
+                .OrderBy(x => x.Name)
+                .ToList();
+
+            ViewBag.Roles = roles;
+            ViewBag.Policies = mapper.Map<List<ReadPolicyModel>>(policies);
+            ViewBag.Brands = mapper.Map<List<ReadBrandModel>>(brands);
+
             if (!ModelState.IsValid)
             {
                 return View(editUserModel);
@@ -197,23 +222,7 @@ namespace CommissionSystem.WebApplication.Controllers
             if (editUserModel.Brand == null)
                 editUserModel.Brand = Array.Empty<string>();
 
-            var roles = (await _userService.ListOfRoles()).Select(a => new SelectListItem()
-            {
-                Text = a.Name,
-                Value = a.ID.ToString(),
-                Selected = false
 
-            }).AsEnumerable();
-
-            var policies = (await _userService.ListOfPolicies())
-                .OrderBy(a => a.Name); ;
-
-            var brands = (await _brandService.ListOfBrands())
-                .OrderBy(x => x.Name);
-
-            ViewBag.Roles = roles ;
-            ViewBag.Policies = mapper.Map<IOrderedEnumerable<ReadPolicyModel>>(policies);
-            ViewBag.Brands = mapper.Map<IOrderedEnumerable<ReadBrandModel>>(brands);
 
             var user = mapper.Map<Entities.User>(editUserModel);
             var selectedBrandsList = editUserModel.Brand.Select(a => Convert.ToInt32(a)).ToList();

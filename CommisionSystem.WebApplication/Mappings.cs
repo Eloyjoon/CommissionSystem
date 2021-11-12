@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CommissionSystem.WebApplication
 {
-    public class Mappings:Profile
+    public class Mappings : Profile
     {
         public Mappings()
         {
@@ -25,8 +21,23 @@ namespace CommissionSystem.WebApplication
                     dest.UserID,
                     opt => opt.MapFrom(src => src.ID));
 
-            CreateMap<Models.ViewModels.EditUserModel, Entities.User>();
-            CreateMap<Models.ViewModels.CreateUserModel, Entities.User>();
+            CreateMap<Models.ViewModels.EditUserModel, Entities.User>()
+                .ForMember(dest =>
+                    dest.ID,
+                    opt => opt.MapFrom(src => src.UserID))
+                .ForMember(dest =>
+                    dest.Role,
+                    opt => opt.MapFrom(src => new Entities.Role() { ID = src.RoleID }));
+
+            CreateMap<Models.ViewModels.CreateUserModel, Entities.User>()
+                .ForMember(dest =>
+                    dest.Role,
+                    opt => opt.MapFrom(src => new Entities.Role() { ID = src.RoleID }));
+
+            CreateMap<Entities.Policy, Models.ViewModels.ReadPolicyModel>()
+                    .ForMember(dest =>
+                        dest.Title,
+                        opt => opt.MapFrom(src => src.Name));
 
             CreateMap<Entities.Product, Models.ViewModels.ReadProductModel>()
                 .ForMember(dest =>
