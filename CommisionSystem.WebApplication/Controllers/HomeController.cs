@@ -1,13 +1,9 @@
-﻿using CommisionSystem.WebApplication.Models;
+﻿using CommissionSystem.WebApplication.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace CommisionSystem.WebApplication.Controllers
+namespace CommissionSystem.WebApplication.Controllers
 {
     public class HomeController : Controller
     {
@@ -20,12 +16,7 @@ namespace CommisionSystem.WebApplication.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            return RedirectToAction("List", "Product");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,19 +1,19 @@
-using CommisionSystem.WebApplication.Data;
+
+using AutoMapper;
+using CommissionSystem.Data;
+using CommissionSystem.Data.Sepidar;
+using CommissionSystem.Services.Concretes;
+using CommissionSystem.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 
-namespace CommisionSystem.WebApplication
+namespace CommissionSystem.WebApplication
 {
     public class Startup
     {
@@ -27,14 +27,61 @@ namespace CommisionSystem.WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            //Enable cookie authentication
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddHttpContextAccessor();
+            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+
             services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+            #region Injection
+
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IBrandService, BrandService>();
+            services.AddScoped<Models.OpenQuote, Models.OpenQuote>();
+
+            #endregion
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Dashboard", policy => policy.RequireClaim("Dashboard"));
+                options.AddPolicy("ReadProducts", policy => policy.RequireClaim("ReadProducts"));
+                // options.AddPolicy("ExpertDashboardPolicy", policy => policy.RequireClaim("ExpertDashboard"));
+                // options.AddPolicy("ReadProductsPolicy", policy => policy.RequireClaim("ReadProducts"));
+            });
+
+            services.AddDbContext<CommisionContext>(
+                options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
+
+
+            services.AddDbContext<SepidarContext>(
+                options => options.UseSqlServer("name=ConnectionStrings:SepidarConnection",
+            sqlServerOptions => sqlServerOptions.CommandTimeout(1000))
+            );
+
+            services.AddRazorPages()
+                .AddViewOptions(options =>
+                {
+                    options.HtmlHelperOptions.ClientValidationEnabled = true;
+                });
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen();
+
+            #region AutoMapper
+
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(Mappings)),Assembly.GetAssembly(typeof(Services.Mappings)));
+            // services.AddAutoMapper(typeof(Startup));
+            services.AddControllersWithViews();
+
+
+
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +113,17 @@ namespace CommisionSystem.WebApplication
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
+            app.UseSwaggerUI();
+
+            DefaultFilesOptions options = new DefaultFilesOptions();
+            options.DefaultFileNames.Clear();
+            options.DefaultFileNames.Add("/brand/list");
+            app.UseDefaultFiles(options);
         }
     }
 }

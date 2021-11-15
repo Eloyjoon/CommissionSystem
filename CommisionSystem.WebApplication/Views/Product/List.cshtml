@@ -1,0 +1,108 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Products List";
+}
+
+@inject IJsonHelper Json;
+@model List<CommissionSystem.WebApplication.Models.ViewModels.ReadProductModel>
+
+<div class="col col-12">
+    <h5 class="text-muted">
+        List of products
+    </h5>
+</div>
+
+<div id="calendar">This is Test</div>
+
+<div class="col col-sm-12">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#quotes" role="tab" aria-controls="quotes" aria-selected="true">Products</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">        
+        <div id="products" class="tab-pane fade show active" role="tabpanel" aria-labelledby="quotes-tab"></div>
+    </div>
+    <script>
+
+            $(document).ready(function () {
+                $("#products").kendoGrid({
+                    columns: [
+                        {
+                            template: "<a class='k-button'><span class='k-icon k-i-plus'></span></a>",
+                            width: 35
+                        },
+                        {
+                            width: 180,
+                            field: "code",
+                            title: "Code",
+                            filterable: {
+                                extra: false,
+                                operators: {
+                                    string: {
+                                        contains:"Contains"
+                                    }
+                                }
+                            },
+                        },
+                        {
+                            width: 100,
+                            field: "brand",
+                            title: "Brand",
+                            filterable: {
+                                multi: true,
+                                //when serverPaging of the Grid is enabled, dataSource should be provided for all the Filterable Multi Check widgets
+                                dataSource: {
+                                    transport: {
+                                        read: {
+                                            url: "../API/Brand/Unique",
+                                            dataType: "json"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        { width: 100, field: "unitsInStock", title: "Stock" },
+                        { width: 100, field: "store", title: "Store" },
+                        { width: 120, field: "sumStock", title: "All Stock" },
+                        { width: 100, field: "price", title: "Price" },
+                        { width: 120, field: "currency", title: "Currency" },
+                        { width: 130, field: "priceInRials", title: "Price Rials" },
+                        { width: 180, field: "lastUpdate", title: "Last Update" },
+                        { width: 300, field: "productName", title: "Product Name" }
+                    ],
+                    dataSource: {
+                        type: "json",
+                        transport: {
+                            read: "/API/Product"
+                        },
+                        pageSize: 20
+                    },
+                    selectable: true,
+                    groupable:true,
+                    toolbar: ["excel", "pdf", "search"],
+                    search: {
+                        fields: ["productName","code","brand"]
+                    },
+                    excel: {
+                        fileName: "Products Export.xlsx"
+                    },
+                    pdf: {
+                        fileName: "Products Export.pdf"
+                    },
+
+                    sortable: true,
+                    filterable: true,
+                    pageable: {
+                        refresh: true,
+                        pageSizes: true,
+                        buttonCount: 5
+                    }
+
+                });
+            });
+    </script>
+</div>

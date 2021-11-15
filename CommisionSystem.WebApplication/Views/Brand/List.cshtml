@@ -1,0 +1,64 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Brands List";
+}
+
+@inject IJsonHelper Json;
+@model List<CommissionSystem.WebApplication.Models.ViewModels.ReadBrandModel>
+
+<div class="col col-12">
+    <h5 class="text-muted">
+        List of brands
+    </h5>
+</div>
+
+<div class="col col-sm-12"">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#quotes" role="tab" aria-controls="quotes" aria-selected="true">Products</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div id="brands" class="tab-pane fade show active" role="tabpanel" aria-labelledby="quotes-tab"></div>
+    </div>
+    <script>
+
+            $(document).ready(function () {
+                $("#brands").kendoGrid({
+                    columns: [
+                        { width: 300, field: "id", title: "Brand ID" },
+                        { width: 300,field: "title", title: "Name" },
+                        //{ field: "code", title: "Extra In" },
+                        //{ field: "unitsInStock", title: "Units In Stock" }
+                    ],
+                    dataSource: {
+                        type: "json",
+                        transport: {
+                            read: "/API/Brand"
+                        },
+                        pageSize: 10
+                    },
+                    selectable: true,
+                    toolbar: ["excel", "pdf", "search"],
+                    search: {
+                        fields: ["title","code"]
+                    },
+                    excel: {
+                        fileName: "Brands Export.xlsx"
+                    },
+                    pdf: {
+                        fileName: "Brands Export.pdf"
+                    },
+
+                    sortable: true,
+                    pageable: true,
+
+                });
+            });
+
+    </script>
+</div>
+
