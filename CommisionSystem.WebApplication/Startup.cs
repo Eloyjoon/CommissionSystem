@@ -42,6 +42,7 @@ namespace CommissionSystem.WebApplication
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IBrandService, BrandService>();
+            services.AddScoped<Models.OpenQuote, Models.OpenQuote>();
 
             #endregion
 

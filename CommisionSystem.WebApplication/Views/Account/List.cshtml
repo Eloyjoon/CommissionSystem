@@ -38,7 +38,7 @@
         $(document).ready(function () {
             $("#users").kendoGrid({
                 columns: [
-                    { width: 100, field: "userID", title: "User ID" },
+                    { width: 75, field: "userID", title: "ID" },
                     { width: 100, field: "firstName", title: "Name" },
                     { width: 100,  field: "lastName", title: "LastName" },
                     { width: 100, field: "userName", title: "UserName" },
@@ -73,7 +73,7 @@
                     pageSize: 20
                 },
                 selectable: true,
-                toolbar: ["search","<button class='k-button' onclick='addUser()'><span class='k-icon k-i-plus'></span>Add New User</button>","<button class='k-button' onclick='addUser()'><span class='k-icon k-i-plus'></span>Sync From Active Directory</button>"],
+                toolbar: ["<button class='k-button' onclick='addUser()'><span class='k-icon k-i-plus'></span>Add New User</button>", "<button class='k-button' onclick='addUser()'><span class='k-icon k-i-plus'></span>Sync From Active Directory</button>", "search"],
                 search: {
                     fields: ["firstName", "lastName", "userName","roleName","status"]
                 },

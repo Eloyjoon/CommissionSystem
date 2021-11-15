@@ -10,7 +10,9 @@ namespace CommissionSystem.Data.Sepidar
         public int ID { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
+        public string Store { get; set; }
         public decimal Stock { get; set; }
+        public decimal SumStock { get; set; }
         public int BrandID { get; set; }
         public Brand Brand { get; set; }
         public decimal Price { get; set; }

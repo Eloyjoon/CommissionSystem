@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace CommissionSystem.Data
 {
@@ -13,6 +9,7 @@ namespace CommissionSystem.Data
         public DbSet<Policy> Policies { get; set; }
         public DbSet<UserPolicy> UserPolicies { get; set; }
         public DbSet<UserBrand> UserBrands { get; set; }
+        public DbSet<Quote> Quotes { get; set; }
 
         public CommisionContext(DbContextOptions<CommisionContext> options) : base(options)
         {
@@ -89,6 +86,22 @@ namespace CommissionSystem.Data
 
             #endregion
 
+            #region Seed Quote Statuses
+
+            modelBuilder.Entity<QuoteStatus>().HasData(
+                new { ID = 1, Name="Open",Title="Open" });
+
+
+            modelBuilder.Entity<QuoteStatus>().HasData(
+                new { ID = 2, Name = "Draft", Title = "Draft" });
+
+            modelBuilder.Entity<QuoteStatus>().HasData(
+                new { ID = 3, Name = "WaitingToConfirm", Title = "Waiting To Confirm" });
+
+            modelBuilder.Entity<QuoteStatus>().HasData(
+                new { ID = 4, Name = "Finalized", Title = "Finalized" });
+
+            #endregion
 
             base.OnModelCreating(modelBuilder);
         }
