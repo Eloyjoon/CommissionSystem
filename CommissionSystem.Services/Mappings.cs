@@ -23,7 +23,10 @@ namespace CommissionSystem.Services
             CreateMap<Data.Sepidar.Product, Entities.Product>()
                 .ForMember(dest =>
                     dest.UnitsInStock,
-                    opt => opt.MapFrom(src => Convert.ToInt32(src.Stock)));
+                    opt => opt.MapFrom(src => Convert.ToInt32(src.Stock)))
+                 .ForMember(dest =>
+                    dest.SumStock,
+                    opt => opt.MapFrom(src => Convert.ToInt32(src.SumStock)));
 
             CreateMap<Data.User, Entities.User>()
                 .ForMember(dest=>

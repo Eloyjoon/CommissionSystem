@@ -34,5 +34,18 @@ namespace CommissionSystem.WebApplication.API
 
             return mapper.Map<List<ReadBrandModel>>(list);
         }
+
+        [HttpGet("Unique")]
+        [Authorize/*(Policy = "ReadProductsPolicy")*/]
+        public async Task<IEnumerable<BrandFilter>> Test()
+        {
+            var userId = Convert.ToInt32(HttpContext.User.Claims.First(a => a.Type == "UserID").Value);
+
+            var list = (await brandService
+                .ListOfUserBrands(userId))
+                .ToList();
+
+            return mapper.Map<List<ReadBrandModel>>(list).Select(a=>new BrandFilter() { Brand=a.Title}).ToList();
+        }
     }
 }

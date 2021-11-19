@@ -13,6 +13,8 @@ namespace CommissionSystem.WebApplication.Models.ViewModels
         public string ProductName { get; set; }
         public string Code { get; set; }
         public int UnitsInStock { get; set; }
+        public int SumStock { get; set; }
+        public string Store { get; set; }
         public string Brand { get; set; }
         public string Price { get; set; }
         public string Currency

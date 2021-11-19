@@ -9,8 +9,14 @@ namespace CommissionSystem.WebApplication.Controllers
 {
     public class DashboardController : Controller
     {
+
         [Authorize(Policy = "Dashboard")]
         public IActionResult Expert()
+        {
+            return View();
+        }
+
+        public IActionResult DraftQuotes()
         {
             return View();
         }
