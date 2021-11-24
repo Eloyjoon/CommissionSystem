@@ -16,5 +16,14 @@ namespace CommissionSystem.WebApplication.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public DateTime Test()
+        {
+            var testDate = DateTime.Now;
+            return testDate;
+        }
     }
+
+
 }

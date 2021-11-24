@@ -65,7 +65,25 @@ from inv.item i
     order by cer.EffectiveDate desc
 ) as exchangeRate
 where iss.fiscalyearref = 6").Include(a => a.Brand).ToList();
-            return mapper.Map<List<Entities.Product>>(products);
+
+            var domainProducts = mapper.Map<List<Entities.Product>>(products);
+
+            List<Entities.Product> groupedList = new List<Entities.Product>();
+
+            foreach (var item in domainProducts)
+            {
+                var result = groupedList.FirstOrDefault(a => a.ID == item.ID);
+                if(result!=null)
+                {
+                    result.JoinedStores +=Environment.NewLine + item.Store.Replace("انبار ",string.Empty)+" "+item.UnitsInStock;
+                }
+                else
+                {
+                    groupedList.Add(item);
+                }
+            }            
+
+            return groupedList;
 
         }
         public IEnumerable<Entities.Product> ListOfUserProducts(int userID)

@@ -46,7 +46,7 @@
                     </div>
                     <div class="user-info">
                         <span class="user-name">
-                            @{ 
+                            @{
                                 var firstName = this.User.Claims.First(a => a.Type == "FirstName").Value;
                                 var lastName = this.User.Claims.First(a => a.Type == "LastName").Value;
                             }
@@ -131,131 +131,131 @@
                                 </div>
                             </li>
                         }
-                            <li class="sidebar-dropdown">
+                        <li class="sidebar-dropdown">
+                            <a href="#">
+                                <i class="fa fa-shopping-cart"></i>
+                                <span>Products</span>
+                                <span class="badge badge-pill badge-success">3</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="~/Product/List">
+                                            List
+                                        </a>
+                                    </li>
+                                    @*<li>
+                                            <a href="#">Orders</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Credit cart</a>
+                                        </li>*@
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="sidebar-dropdown">
+                            <a href="#">
+                                <i class="far fa-gem"></i>
+                                <span>Brands</span>
+                            </a>
+                            <div class="sidebar-submenu">
+                                <ul>
+                                    <li>
+                                        <a href="~/Brand/List">List</a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </li>
+                        @*<li class="sidebar-dropdown">
                                 <a href="#">
-                                    <i class="fa fa-shopping-cart"></i>
-                                    <span>Products</span>
-                                    <span class="badge badge-pill badge-success">3</span>
+                                    <i class="fa fa-chart-line"></i>
+                                    <span>Charts</span>
                                 </a>
                                 <div class="sidebar-submenu">
                                     <ul>
                                         <li>
-                                            <a href="~/Product/List">
-                                                List
-                                            </a>
+                                            <a href="#">Pie chart</a>
                                         </li>
-                                        @*<li>
-                            <a href="#">Orders</a>
-                        </li>
-                        <li>
-                            <a href="#">Credit cart</a>
-                        </li>*@
+                                        <li>
+                                            <a href="#">Line chart</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Bar chart</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Histogram</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="sidebar-dropdown">
                                 <a href="#">
-                                    <i class="far fa-gem"></i>
-                                    <span>Brands</span>
+                                    <i class="fa fa-globe"></i>
+                                    <span>Maps</span>
                                 </a>
                                 <div class="sidebar-submenu">
                                     <ul>
                                         <li>
-                                            <a href="~/Brand/List">List</a>
+                                            <a href="#">Google maps</a>
                                         </li>
+                                        <li>
+                                            <a href="#">Open street map</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>*@
 
+
+                        @if (this.User.Claims.First(a => a.Type == "AccessLevel").Value == "30")
+                        {
+
+                            @*Super Admin*@
+                            <li class="header-menu">
+                                <span>Extra</span>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#">
+                                    <i class="fa fa-user"></i>
+                                    <span>Users</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="~/Account/List">List</a>
+                                        </li>
+                                        <li>
+                                            <a href="~/Account/CreateUser">Create</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </li>
-                            @*<li class="sidebar-dropdown">
-                <a href="#">
-                    <i class="fa fa-chart-line"></i>
-                    <span>Charts</span>
-                </a>
-                <div class="sidebar-submenu">
-                    <ul>
-                        <li>
-                            <a href="#">Pie chart</a>
-                        </li>
-                        <li>
-                            <a href="#">Line chart</a>
-                        </li>
-                        <li>
-                            <a href="#">Bar chart</a>
-                        </li>
-                        <li>
-                            <a href="#">Histogram</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="sidebar-dropdown">
-                <a href="#">
-                    <i class="fa fa-globe"></i>
-                    <span>Maps</span>
-                </a>
-                <div class="sidebar-submenu">
-                    <ul>
-                        <li>
-                            <a href="#">Google maps</a>
-                        </li>
-                        <li>
-                            <a href="#">Open street map</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>*@
-
-
-                            @if (this.User.Claims.First(a => a.Type == "AccessLevel").Value == "30")
-                            {
-
-                                @*Super Admin*@
-                                <li class="header-menu">
-                                    <span>Extra</span>
-                                </li>
-                                <li class="sidebar-dropdown">
+                            @*<li>
                                     <a href="#">
-                                        <i class="fa fa-user"></i>
-                                        <span>Users</span>
+                                        <i class="fa fa-book"></i>
+                                        <span>Documentation</span>
+                                        <span class="badge badge-pill badge-primary">Beta</span>
                                     </a>
-                                    <div class="sidebar-submenu">
-                                        <ul>
-                                            <li>
-                                                <a href="~/Account/List">List</a>
-                                            </li>
-                                            <li>
-                                                <a href="~/Account/CreateUser">Create</a>
-                                            </li>
-                                        </ul>
-                                    </div>
                                 </li>
-                                @*<li>
-                    <a href="#">
-                        <i class="fa fa-book"></i>
-                        <span>Documentation</span>
-                        <span class="badge badge-pill badge-primary">Beta</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-calendar"></i>
-                        <span>Calendar</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-folder"></i>
-                        <span>Examples</span>
-                    </a>
-                </li>*@
-                                @*Super Admin*@
-                            }
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-calendar"></i>
+                                        <span>Calendar</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-folder"></i>
+                                        <span>Examples</span>
+                                    </a>
+                                </li>*@
+                            @*Super Admin*@
+                        }
 
 
 
 
-                        </ul>
+                    </ul>
                 </div>
                 <!-- sidebar-menu  -->
             </div>
@@ -281,27 +281,27 @@
         <!-- sidebar-wrapper  -->
         <main class="page-content">
             <div class="container-fluid">
-               
-                    <div class="row">
-                        @RenderBody()
-                    </div>
-               
+
+                <div class="row">
+                    @RenderBody()
+                </div>
+
                 <footer class="text-center">
                     @*<div class="mb-2">
-                        <small>
-                            © 2020 made with <i class="fa fa-heart" style="color:red"></i> by - <a target="_blank" rel="noopener noreferrer" href="https://azouaoui.netlify.com">
-                               
+                            <small>
+                                © 2020 made with <i class="fa fa-heart" style="color:red"></i> by - <a target="_blank" rel="noopener noreferrer" href="https://azouaoui.netlify.com">
+
+                                </a>
+                            </small>
+                        </div>
+                        <div>
+                            <a href="https://github.com/azouaoui-med" target="_blank">
+                                <img alt="GitHub followers" src="https://img.shields.io/github/followers/azouaoui-med?label=github&style=social" />
                             </a>
-                        </small>
-                    </div>
-                    <div>
-                        <a href="https://github.com/azouaoui-med" target="_blank">
-                            <img alt="GitHub followers" src="https://img.shields.io/github/followers/azouaoui-med?label=github&style=social" />
-                        </a>
-                        <a href="https://twitter.com/azouaoui_med" target="_blank">
-                            <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/azouaoui_med?label=twitter&style=social" />
-                        </a>
-                    </div>*@
+                            <a href="https://twitter.com/azouaoui_med" target="_blank">
+                                <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/azouaoui_med?label=twitter&style=social" />
+                            </a>
+                        </div>*@
                 </footer>
             </div>
         </main>
@@ -339,5 +339,21 @@
         }
     </script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                // edit to add steve's suggestion.
+                //url: "/ControllerName/ActionName",
+                url: '/product/test',
+                success: function (data) {
+                    // your data could be a View or Json or what ever you returned in your action method
+                    // parse your data here
+                    alert(data);
+                }
+            });
+
+        });
+
+    </script>
 </body>
 </html>

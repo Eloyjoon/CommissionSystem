@@ -17,6 +17,7 @@ namespace CommissionSystem.Entities
         public decimal Price { get; set; }
         public string Currency { get; set; }
         public double PriceInRials { get; set; }
+        public string JoinedStores { get; set; }
         public DateTime LastUpdate { get; set; }
 
     }
