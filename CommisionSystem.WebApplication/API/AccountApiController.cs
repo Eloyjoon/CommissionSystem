@@ -50,6 +50,7 @@ namespace CommissionSystem.WebApplication.API
 
         }
 
+        [HttpGet]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync();
