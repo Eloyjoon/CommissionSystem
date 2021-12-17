@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CommissionSystem.WebApplication.Migrations
+namespace CommissionSystem.Data.Migrations
 {
     [DbContext(typeof(CommisionContext))]
-    [Migration("20211028064331_SeedDataUser")]
-    partial class SeedDataUser
+    [Migration("20211029142603_AddedStatusToUser")]
+    partial class AddedStatusToUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -115,8 +115,11 @@ namespace CommissionSystem.WebApplication.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RoleID")
+                    b.Property<int>("RoleID")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("SupervisorID")
                         .HasColumnType("int");
@@ -142,7 +145,20 @@ namespace CommissionSystem.WebApplication.Migrations
                             LastName = "Admin",
                             Password = "123",
                             RoleID = 1,
+                            Status = true,
                             UserName = "admin"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            FirstName = "Alireza",
+                            HasAccessToProductSearchReport = true,
+                            HasAccessToQuote = false,
+                            LastName = "Sabouei",
+                            Password = "123",
+                            RoleID = 4,
+                            Status = true,
+                            UserName = "ali"
                         });
                 });
 
@@ -161,7 +177,9 @@ namespace CommissionSystem.WebApplication.Migrations
                 {
                     b.HasOne("CommissionSystem.WebApplication.Data.Role", "Role")
                         .WithMany("Users")
-                        .HasForeignKey("RoleID");
+                        .HasForeignKey("RoleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CommissionSystem.WebApplication.Data.User", "Supervisor")
                         .WithMany()

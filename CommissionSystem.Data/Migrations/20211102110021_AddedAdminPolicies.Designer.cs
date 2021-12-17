@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CommissionSystem.WebApplication.Migrations
+namespace CommissionSystem.Data.Migrations
 {
     [DbContext(typeof(CommisionContext))]
-    [Migration("20211029142603_AddedStatusToUser")]
-    partial class AddedStatusToUser
+    [Migration("20211102110021_AddedAdminPolicies")]
+    partial class AddedAdminPolicies
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,67 @@ namespace CommissionSystem.WebApplication.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CommissionSystem.WebApplication.Data.Policy", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("Policies");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            DisplayName = "Read Products",
+                            Name = "ReadProducts"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            DisplayName = "Read Brands",
+                            Name = "ReadBrands"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            DisplayName = "Read Users",
+                            Name = "ReadUsers"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            DisplayName = "Disable User Account",
+                            Name = "DisableUserAccount"
+                        },
+                        new
+                        {
+                            ID = 5,
+                            DisplayName = "Enable User Account",
+                            Name = "EnableUserAccount"
+                        },
+                        new
+                        {
+                            ID = 6,
+                            DisplayName = "Add User Account",
+                            Name = "AddUserAccount"
+                        });
+                });
 
             modelBuilder.Entity("CommissionSystem.WebApplication.Data.Role", b =>
                 {
@@ -162,6 +223,73 @@ namespace CommissionSystem.WebApplication.Migrations
                         });
                 });
 
+            modelBuilder.Entity("CommissionSystem.WebApplication.Data.UserPolicy", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("PolicyID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PolicyID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserPolicies");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            PolicyID = 1,
+                            UserID = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            PolicyID = 2,
+                            UserID = 1
+                        },
+                        new
+                        {
+                            ID = 3,
+                            PolicyID = 3,
+                            UserID = 1
+                        },
+                        new
+                        {
+                            ID = 4,
+                            PolicyID = 4,
+                            UserID = 1
+                        },
+                        new
+                        {
+                            ID = 5,
+                            PolicyID = 5,
+                            UserID = 1
+                        },
+                        new
+                        {
+                            ID = 6,
+                            PolicyID = 6,
+                            UserID = 1
+                        });
+                });
+
+            modelBuilder.Entity("CommissionSystem.WebApplication.Data.Policy", b =>
+                {
+                    b.HasOne("CommissionSystem.WebApplication.Data.User", null)
+                        .WithMany("UserPolicies")
+                        .HasForeignKey("UserID");
+                });
+
             modelBuilder.Entity("CommissionSystem.WebApplication.Data.RolePolicy", b =>
                 {
                     b.HasOne("CommissionSystem.WebApplication.Data.Role", "Role")
@@ -190,11 +318,35 @@ namespace CommissionSystem.WebApplication.Migrations
                     b.Navigation("Supervisor");
                 });
 
+            modelBuilder.Entity("CommissionSystem.WebApplication.Data.UserPolicy", b =>
+                {
+                    b.HasOne("CommissionSystem.WebApplication.Data.Policy", "Policy")
+                        .WithMany()
+                        .HasForeignKey("PolicyID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CommissionSystem.WebApplication.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Policy");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("CommissionSystem.WebApplication.Data.Role", b =>
                 {
                     b.Navigation("RolePolicies");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("CommissionSystem.WebApplication.Data.User", b =>
+                {
+                    b.Navigation("UserPolicies");
                 });
 #pragma warning restore 612, 618
         }

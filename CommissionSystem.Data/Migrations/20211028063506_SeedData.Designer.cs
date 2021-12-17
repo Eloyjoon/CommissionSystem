@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CommissionSystem.WebApplication.Migrations
+namespace CommissionSystem.Data.Migrations
 {
     [DbContext(typeof(CommisionContext))]
-    [Migration("20211028061432_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20211028063506_SeedData")]
+    partial class SeedData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,14 +36,32 @@ namespace CommissionSystem.WebApplication.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
                         {
-                            ID = 4,
-                            AccessLevel = 5,
+                            ID = 1,
+                            AccessLevel = 4,
                             RoleName = "Super Admin"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            AccessLevel = 3,
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            AccessLevel = 2,
+                            RoleName = "Supervisor"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            AccessLevel = 1,
+                            RoleName = "Expert"
                         });
                 });
 
@@ -65,6 +83,14 @@ namespace CommissionSystem.WebApplication.Migrations
                     b.HasIndex("RoleID");
 
                     b.ToTable("RolePolicies");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Policy = "CreateUser",
+                            RoleID = 1
+                        });
                 });
 
             modelBuilder.Entity("CommissionSystem.WebApplication.Data.User", b =>
