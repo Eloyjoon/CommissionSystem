@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CommissionSystem.Services.Concretes
 {
-    public class ProductService :BaseService, IProductService
+    public class ProductService : BaseService, IProductService
     {
         private readonly SepidarContext sepidarContext;
         private readonly CommisionContext commisionContext;
@@ -125,20 +125,21 @@ where iss.fiscalyearref = 6").Include(a => a.Brand).ToList();
             foreach (var item in domainProducts)
             {
                 var result = groupedList.FirstOrDefault(a => a.ID == item.ID);
-                if(result!=null)
+                if (result != null)
                 {
-                    result.JoinedStores +=Environment.NewLine + item.Store.Replace("انبار ",string.Empty)+" "+item.UnitsInStock;
+                    result.JoinedStores += "</br>" + item.Store.Replace("انبار ", string.Empty) + " " + item.UnitsInStock;
                 }
                 else
                 {
+                    item.JoinedStores =item.Store.Replace("انبار ", string.Empty) + " " + item.UnitsInStock;
                     groupedList.Add(item);
                 }
-            }            
+            }
 
             return groupedList;
 
         }
-        public IEnumerable<Entities.Product> ListOfUserProducts(int userID,bool grouped)
+        public IEnumerable<Entities.Product> ListOfUserProducts(int userID, bool grouped)
         {
             var user = commisionContext.Users
                 .Include(a => a.Role)

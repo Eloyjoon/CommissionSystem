@@ -46,9 +46,9 @@ namespace CommissionSystem.WebApplication
                 .ForMember(dest =>
                         dest.Brand,
                         opt => opt.MapFrom(src => src.Brand.Name))
-                .ForMember(dest =>
-                        dest.Store,
-                        opt => opt.MapFrom(src => src.JoinedStores))
+                //.ForMember(dest =>
+                //        dest.Store,
+                //        opt => opt.MapFrom(src => src.JoinedStores))
                 .ForMember(dest =>
                     dest.PriceInRials,
                     opt => opt.MapFrom(src => string.Format("{0:N0}", src.PriceInRials)));

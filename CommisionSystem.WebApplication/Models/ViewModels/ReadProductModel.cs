@@ -15,6 +15,7 @@ namespace CommissionSystem.WebApplication.Models.ViewModels
         public int UnitsInStock { get; set; }
         public int SumStock { get; set; }
         public string Store { get; set; }
+        public string JoinedStores { get; set; }
         public string Brand { get; set; }
         public string Price { get; set; }
         public string Currency
@@ -23,10 +24,6 @@ namespace CommissionSystem.WebApplication.Models.ViewModels
             set
             {               
                 currency = value;
-                //if (value=="یورو")
-                //{
-                //    currency = "Euro";
-                //}
             }
         }
         public string PriceInRials { get; set; }

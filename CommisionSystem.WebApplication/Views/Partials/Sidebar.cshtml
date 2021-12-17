@@ -2,6 +2,7 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+
 }
 
 <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
@@ -22,7 +23,7 @@
             </div>
             <div class="user-info">
                 <span class="user-name">
-                    @{             
+                    @{
                         var firstName = this.User.Claims.First(a => a.Type == "FirstName").Value;
                         var lastName = this.User.Claims.First(a => a.Type == "LastName").Value;
                     }
@@ -52,8 +53,7 @@
         <!-- sidebar-search  -->
         <div class="sidebar-menu">
             <ul>
-                @if (this.User.Claims.First(a => a.Type == "UserID").Value != "74")
-                {
+                <environment names="Development">
                     <li class="header-menu">
                         <span>In Progress</span>
                     </li>
@@ -64,13 +64,12 @@
                             <span class="badge badge-pill badge-warning">New</span>
                         </a>
                     </li>
-                }
+                </environment>
 
                 <li class="header-menu">
                     <span>General</span>
                 </li>
-                @if (this.User.Claims.First(a => a.Type == "UserID").Value != "74")
-                {
+                <environment names="Development">
                     <li class="sidebar-dropdown">
                         <a href="#">
                             <i class="fa fa-tachometer-alt"></i>
@@ -106,7 +105,7 @@
                             </ul>
                         </div>
                     </li>
-                }
+                </environment>
                 <li class="sidebar-dropdown">
                     <a href="#">
                         <i class="fa fa-shopping-cart"></i>

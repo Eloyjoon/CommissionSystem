@@ -31,7 +31,9 @@ namespace CommissionSystem.WebApplication.API
             var list = productService
                 .ListOfUserProducts(userId,grouped);
 
-            return mapper.Map<IEnumerable<ReadProductModel>>(list);
+            var result = mapper.Map<IEnumerable<ReadProductModel>>(list);
+
+            return result;
         }
     }
 }
