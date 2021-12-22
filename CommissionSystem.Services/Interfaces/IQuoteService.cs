@@ -9,6 +9,8 @@ namespace CommissionSystem.Services.Interfaces
 {
     public interface IQuoteService
     {
-        Task<bool> AddItemToQuote(QuoteItem quoteItem, int userID);
+        Task<bool> AddItemToQuote(QuoteItem quoteItem, int userID, int count, decimal unitPrice);
+
+        Task<Quote> GetOpenQuote(int userId);
     }
 }

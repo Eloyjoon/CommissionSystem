@@ -35,6 +35,10 @@ namespace CommissionSystem.Services
 
             CreateMap<Data.Policy, Entities.Policy>();
 
+            CreateMap<Data.QuoteItem, Entities.QuoteItem>();
+            CreateMap<Data.QuoteStatus, Entities.QuoteStatus>();
+            CreateMap<Data.Quote, Entities.Quote>();
+
         }
     }
 }

@@ -4,14 +4,16 @@ using CommissionSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CommissionSystem.Data.Migrations
 {
     [DbContext(typeof(CommisionContext))]
-    partial class CommisionContextModelSnapshot : ModelSnapshot
+    [Migration("20211219172301_AddQuoteItems")]
+    partial class AddQuoteItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

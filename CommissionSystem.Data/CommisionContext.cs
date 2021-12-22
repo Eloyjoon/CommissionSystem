@@ -10,6 +10,7 @@ namespace CommissionSystem.Data
         public DbSet<UserPolicy> UserPolicies { get; set; }
         public DbSet<UserBrand> UserBrands { get; set; }
         public DbSet<Quote> Quotes { get; set; }
+        public DbSet<QuoteItem> QuoteItems { get; set; }
         public DbSet<QuoteStatus> QuoteStatuses { get; set; }
 
         public CommisionContext(DbContextOptions<CommisionContext> options) : base(options)

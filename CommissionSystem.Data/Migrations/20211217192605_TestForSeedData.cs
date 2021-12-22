@@ -61,13 +61,13 @@ namespace CommissionSystem.Data.Migrations
                         column: x => x.AssigneeID,
                         principalTable: "Users",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Quotes_Users_CreatorID",
                         column: x => x.CreatorID,
                         principalTable: "Users",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
