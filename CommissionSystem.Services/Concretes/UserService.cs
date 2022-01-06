@@ -33,7 +33,6 @@ namespace CommissionSystem.Services.Concretes
             else
                 return mapper.Map<Entities.User>(result);
         }
-
         public async Task<Entities.User> GetUser(int userID)
         {
             var result= await commisionContext.Users
@@ -44,7 +43,6 @@ namespace CommissionSystem.Services.Concretes
 
             return mapper.Map<Entities.User>(result);
         }
-
         public async Task<List<Entities.Brand>> GetUserBrands(int userID)
         {
             var brandIDs = await commisionContext.UserBrands
@@ -60,7 +58,6 @@ namespace CommissionSystem.Services.Concretes
             return mapper.Map<List<Entities.Brand>>(brands);
 
         }
-
         public async Task<List<Entities.Policy>> GetUserPolicy(int userID)
         {
             var policies= await commisionContext.UserPolicies
@@ -70,7 +67,6 @@ namespace CommissionSystem.Services.Concretes
 
             return mapper.Map<List<Entities.Policy>>(policies);
         }
-
         public async Task<Entities.User> Exist(string username)
         {
             var user= await commisionContext.Users
@@ -160,7 +156,6 @@ namespace CommissionSystem.Services.Concretes
             commisionContext.Users.First(a => a.ID == userID).Status = enabled;
             commisionContext.SaveChanges();
         }
-
         public async Task SyncUsers()
         {
             //using (var context = new PrincipalContext(ContextType.Domain, "hurmengroup.local"))
@@ -197,7 +192,6 @@ namespace CommissionSystem.Services.Concretes
             //}
             //return null;
         }
-
         public async Task EditUser(Entities.User input, List<int> brandIDs, List<int> policyIDs)
         {
             var user = commisionContext.Users.First(a => a.ID == input.ID);

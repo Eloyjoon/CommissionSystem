@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CommissionSystem.WebApplication.Migrations
+namespace CommissionSystem.Data.Migrations
 {
     [DbContext(typeof(CommisionContext))]
-    [Migration("20211105182815_UserBrands")]
-    partial class UserBrands
+    [Migration("20211105194018_UserPolicies")]
+    partial class UserPolicies
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,6 +79,12 @@ namespace CommissionSystem.WebApplication.Migrations
                             ID = 6,
                             DisplayName = "Add User Account",
                             Name = "AddUserAccount"
+                        },
+                        new
+                        {
+                            ID = 7,
+                            DisplayName = "Dashboard",
+                            Name = "Dashboard"
                         });
                 });
 
@@ -265,6 +271,12 @@ namespace CommissionSystem.WebApplication.Migrations
                         {
                             ID = 6,
                             PolicyID = 6,
+                            UserID = 1
+                        },
+                        new
+                        {
+                            ID = 7,
+                            PolicyID = 7,
                             UserID = 1
                         });
                 });

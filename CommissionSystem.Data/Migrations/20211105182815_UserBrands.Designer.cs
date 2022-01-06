@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CommissionSystem.WebApplication.Migrations
+namespace CommissionSystem.Data.Migrations
 {
     [DbContext(typeof(CommisionContext))]
-    [Migration("20211102103741_AddedPolicies")]
-    partial class AddedPolicies
+    [Migration("20211105182815_UserBrands")]
+    partial class UserBrands
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,7 +34,12 @@ namespace CommissionSystem.WebApplication.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserID")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
+
+                    b.HasIndex("UserID");
 
                     b.ToTable("Policies");
 
@@ -98,54 +103,20 @@ namespace CommissionSystem.WebApplication.Migrations
                         new
                         {
                             ID = 1,
-                            AccessLevel = 4,
+                            AccessLevel = 30,
                             RoleName = "Super Admin"
                         },
                         new
                         {
                             ID = 2,
-                            AccessLevel = 3,
-                            RoleName = "Admin"
-                        },
-                        new
-                        {
-                            ID = 3,
-                            AccessLevel = 2,
+                            AccessLevel = 20,
                             RoleName = "Supervisor"
                         },
                         new
                         {
-                            ID = 4,
-                            AccessLevel = 1,
+                            ID = 3,
+                            AccessLevel = 10,
                             RoleName = "Expert"
-                        });
-                });
-
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.RolePolicy", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Policy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RoleID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("RoleID");
-
-                    b.ToTable("RolePolicies");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            Policy = "CreateUser",
-                            RoleID = 1
                         });
                 });
 
@@ -212,10 +183,30 @@ namespace CommissionSystem.WebApplication.Migrations
                             HasAccessToQuote = false,
                             LastName = "Sabouei",
                             Password = "123",
-                            RoleID = 4,
+                            RoleID = 3,
                             Status = true,
                             UserName = "ali"
                         });
+                });
+
+            modelBuilder.Entity("CommissionSystem.WebApplication.Data.UserBrand", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BrandID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserBrands");
                 });
 
             modelBuilder.Entity("CommissionSystem.WebApplication.Data.UserPolicy", b =>
@@ -238,17 +229,51 @@ namespace CommissionSystem.WebApplication.Migrations
                     b.HasIndex("UserID");
 
                     b.ToTable("UserPolicies");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            PolicyID = 1,
+                            UserID = 1
+                        },
+                        new
+                        {
+                            ID = 2,
+                            PolicyID = 2,
+                            UserID = 1
+                        },
+                        new
+                        {
+                            ID = 3,
+                            PolicyID = 3,
+                            UserID = 1
+                        },
+                        new
+                        {
+                            ID = 4,
+                            PolicyID = 4,
+                            UserID = 1
+                        },
+                        new
+                        {
+                            ID = 5,
+                            PolicyID = 5,
+                            UserID = 1
+                        },
+                        new
+                        {
+                            ID = 6,
+                            PolicyID = 6,
+                            UserID = 1
+                        });
                 });
 
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.RolePolicy", b =>
+            modelBuilder.Entity("CommissionSystem.WebApplication.Data.Policy", b =>
                 {
-                    b.HasOne("CommissionSystem.WebApplication.Data.Role", "Role")
-                        .WithMany("RolePolicies")
-                        .HasForeignKey("RoleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
+                    b.HasOne("CommissionSystem.WebApplication.Data.User", null)
+                        .WithMany("UserPolicies")
+                        .HasForeignKey("UserID");
                 });
 
             modelBuilder.Entity("CommissionSystem.WebApplication.Data.User", b =>
@@ -266,6 +291,17 @@ namespace CommissionSystem.WebApplication.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("Supervisor");
+                });
+
+            modelBuilder.Entity("CommissionSystem.WebApplication.Data.UserBrand", b =>
+                {
+                    b.HasOne("CommissionSystem.WebApplication.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CommissionSystem.WebApplication.Data.UserPolicy", b =>
@@ -289,9 +325,12 @@ namespace CommissionSystem.WebApplication.Migrations
 
             modelBuilder.Entity("CommissionSystem.WebApplication.Data.Role", b =>
                 {
-                    b.Navigation("RolePolicies");
-
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("CommissionSystem.WebApplication.Data.User", b =>
+                {
+                    b.Navigation("UserPolicies");
                 });
 #pragma warning restore 612, 618
         }

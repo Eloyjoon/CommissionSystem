@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CommissionSystem.WebApplication.Migrations
+namespace CommissionSystem.Data.Migrations
 {
     [DbContext(typeof(CommisionContext))]
-    [Migration("20211102110021_AddedAdminPolicies")]
-    partial class AddedAdminPolicies
+    [Migration("20211219172301_AddQuoteItems")]
+    partial class AddQuoteItems
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace CommissionSystem.WebApplication.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.Policy", b =>
+            modelBuilder.Entity("CommissionSystem.Data.Policy", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -34,12 +34,7 @@ namespace CommissionSystem.WebApplication.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserID")
-                        .HasColumnType("int");
-
                     b.HasKey("ID");
-
-                    b.HasIndex("UserID");
 
                     b.ToTable("Policies");
 
@@ -79,10 +74,137 @@ namespace CommissionSystem.WebApplication.Migrations
                             ID = 6,
                             DisplayName = "Add User Account",
                             Name = "AddUserAccount"
+                        },
+                        new
+                        {
+                            ID = 7,
+                            DisplayName = "Dashboard",
+                            Name = "Dashboard"
                         });
                 });
 
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.Role", b =>
+            modelBuilder.Entity("CommissionSystem.Data.Quote", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AssigneeID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CreatorID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PersonInCharge")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("QuoteStatusID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("AssigneeID");
+
+                    b.HasIndex("CreatorID");
+
+                    b.HasIndex("QuoteStatusID");
+
+                    b.ToTable("Quotes");
+                });
+
+            modelBuilder.Entity("CommissionSystem.Data.QuoteItem", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Commission")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuoteID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("TotalPriceInRials")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UnitPriceInRials")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("QuoteID");
+
+                    b.ToTable("QuoteItems");
+                });
+
+            modelBuilder.Entity("CommissionSystem.Data.QuoteStatus", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("QuoteStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Name = "Open",
+                            Title = "Open"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Name = "Draft",
+                            Title = "Draft"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Name = "WaitingToConfirm",
+                            Title = "Waiting To Confirm"
+                        },
+                        new
+                        {
+                            ID = 4,
+                            Name = "Finalized",
+                            Title = "Finalized"
+                        });
+                });
+
+            modelBuilder.Entity("CommissionSystem.Data.Role", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -103,58 +225,24 @@ namespace CommissionSystem.WebApplication.Migrations
                         new
                         {
                             ID = 1,
-                            AccessLevel = 4,
+                            AccessLevel = 30,
                             RoleName = "Super Admin"
                         },
                         new
                         {
                             ID = 2,
-                            AccessLevel = 3,
-                            RoleName = "Admin"
-                        },
-                        new
-                        {
-                            ID = 3,
-                            AccessLevel = 2,
+                            AccessLevel = 20,
                             RoleName = "Supervisor"
                         },
                         new
                         {
-                            ID = 4,
-                            AccessLevel = 1,
+                            ID = 3,
+                            AccessLevel = 10,
                             RoleName = "Expert"
                         });
                 });
 
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.RolePolicy", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Policy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RoleID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("RoleID");
-
-                    b.ToTable("RolePolicies");
-
-                    b.HasData(
-                        new
-                        {
-                            ID = 1,
-                            Policy = "CreateUser",
-                            RoleID = 1
-                        });
-                });
-
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.User", b =>
+            modelBuilder.Entity("CommissionSystem.Data.User", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -217,13 +305,33 @@ namespace CommissionSystem.WebApplication.Migrations
                             HasAccessToQuote = false,
                             LastName = "Sabouei",
                             Password = "123",
-                            RoleID = 4,
+                            RoleID = 3,
                             Status = true,
                             UserName = "ali"
                         });
                 });
 
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.UserPolicy", b =>
+            modelBuilder.Entity("CommissionSystem.Data.UserBrand", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BrandID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("UserBrands");
+                });
+
+            modelBuilder.Entity("CommissionSystem.Data.UserPolicy", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -280,36 +388,60 @@ namespace CommissionSystem.WebApplication.Migrations
                             ID = 6,
                             PolicyID = 6,
                             UserID = 1
+                        },
+                        new
+                        {
+                            ID = 7,
+                            PolicyID = 7,
+                            UserID = 1
                         });
                 });
 
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.Policy", b =>
+            modelBuilder.Entity("CommissionSystem.Data.Quote", b =>
                 {
-                    b.HasOne("CommissionSystem.WebApplication.Data.User", null)
-                        .WithMany("UserPolicies")
-                        .HasForeignKey("UserID");
-                });
-
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.RolePolicy", b =>
-                {
-                    b.HasOne("CommissionSystem.WebApplication.Data.Role", "Role")
-                        .WithMany("RolePolicies")
-                        .HasForeignKey("RoleID")
+                    b.HasOne("CommissionSystem.Data.User", "Assignee")
+                        .WithMany()
+                        .HasForeignKey("AssigneeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Role");
+                    b.HasOne("CommissionSystem.Data.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CommissionSystem.Data.QuoteStatus", "QuoteStatus")
+                        .WithMany()
+                        .HasForeignKey("QuoteStatusID");
+
+                    b.Navigation("Assignee");
+
+                    b.Navigation("Creator");
+
+                    b.Navigation("QuoteStatus");
                 });
 
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.User", b =>
+            modelBuilder.Entity("CommissionSystem.Data.QuoteItem", b =>
                 {
-                    b.HasOne("CommissionSystem.WebApplication.Data.Role", "Role")
+                    b.HasOne("CommissionSystem.Data.Quote", "Quote")
+                        .WithMany("QuoteItems")
+                        .HasForeignKey("QuoteID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Quote");
+                });
+
+            modelBuilder.Entity("CommissionSystem.Data.User", b =>
+                {
+                    b.HasOne("CommissionSystem.Data.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CommissionSystem.WebApplication.Data.User", "Supervisor")
+                    b.HasOne("CommissionSystem.Data.User", "Supervisor")
                         .WithMany()
                         .HasForeignKey("SupervisorID");
 
@@ -318,16 +450,27 @@ namespace CommissionSystem.WebApplication.Migrations
                     b.Navigation("Supervisor");
                 });
 
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.UserPolicy", b =>
+            modelBuilder.Entity("CommissionSystem.Data.UserBrand", b =>
                 {
-                    b.HasOne("CommissionSystem.WebApplication.Data.Policy", "Policy")
+                    b.HasOne("CommissionSystem.Data.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CommissionSystem.Data.UserPolicy", b =>
+                {
+                    b.HasOne("CommissionSystem.Data.Policy", "Policy")
                         .WithMany()
                         .HasForeignKey("PolicyID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CommissionSystem.WebApplication.Data.User", "User")
-                        .WithMany()
+                    b.HasOne("CommissionSystem.Data.User", "User")
+                        .WithMany("UserPolicies")
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -337,14 +480,17 @@ namespace CommissionSystem.WebApplication.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.Role", b =>
+            modelBuilder.Entity("CommissionSystem.Data.Quote", b =>
                 {
-                    b.Navigation("RolePolicies");
+                    b.Navigation("QuoteItems");
+                });
 
+            modelBuilder.Entity("CommissionSystem.Data.Role", b =>
+                {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("CommissionSystem.WebApplication.Data.User", b =>
+            modelBuilder.Entity("CommissionSystem.Data.User", b =>
                 {
                     b.Navigation("UserPolicies");
                 });

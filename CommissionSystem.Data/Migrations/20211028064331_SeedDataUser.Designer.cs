@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CommissionSystem.WebApplication.Migrations
+namespace CommissionSystem.Data.Migrations
 {
     [DbContext(typeof(CommisionContext))]
-    [Migration("20211028063506_SeedData")]
-    partial class SeedData
+    [Migration("20211028064331_SeedDataUser")]
+    partial class SeedDataUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -131,6 +131,19 @@ namespace CommissionSystem.WebApplication.Migrations
                     b.HasIndex("SupervisorID");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            FirstName = "Admin",
+                            HasAccessToProductSearchReport = true,
+                            HasAccessToQuote = true,
+                            LastName = "Admin",
+                            Password = "123",
+                            RoleID = 1,
+                            UserName = "admin"
+                        });
                 });
 
             modelBuilder.Entity("CommissionSystem.WebApplication.Data.RolePolicy", b =>

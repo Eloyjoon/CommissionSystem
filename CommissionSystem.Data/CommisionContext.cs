@@ -10,6 +10,8 @@ namespace CommissionSystem.Data
         public DbSet<UserPolicy> UserPolicies { get; set; }
         public DbSet<UserBrand> UserBrands { get; set; }
         public DbSet<Quote> Quotes { get; set; }
+        public DbSet<QuoteItem> QuoteItems { get; set; }
+        public DbSet<QuoteStatus> QuoteStatuses { get; set; }
 
         public CommisionContext(DbContextOptions<CommisionContext> options) : base(options)
         {
@@ -89,7 +91,7 @@ namespace CommissionSystem.Data
             #region Seed Quote Statuses
 
             modelBuilder.Entity<QuoteStatus>().HasData(
-                new { ID = 1, Name="Open",Title="Open" });
+                new { ID = 1, Name = "Open", Title = "Open" });
 
 
             modelBuilder.Entity<QuoteStatus>().HasData(

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CommissionSystem.WebApplication.Migrations
+namespace CommissionSystem.Data.Migrations
 {
     [DbContext(typeof(CommisionContext))]
-    [Migration("20211028064331_SeedDataUser")]
-    partial class SeedDataUser
+    [Migration("20211028070048_SeedDataUser2")]
+    partial class SeedDataUser2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -143,6 +143,17 @@ namespace CommissionSystem.WebApplication.Migrations
                             Password = "123",
                             RoleID = 1,
                             UserName = "admin"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            FirstName = "Alireza",
+                            HasAccessToProductSearchReport = true,
+                            HasAccessToQuote = false,
+                            LastName = "Sabouei",
+                            Password = "123",
+                            RoleID = 4,
+                            UserName = "ali"
                         });
                 });
 

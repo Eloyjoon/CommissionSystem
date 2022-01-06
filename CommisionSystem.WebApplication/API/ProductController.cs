@@ -24,14 +24,16 @@ namespace CommissionSystem.WebApplication.API
         // GET: api/<ValuesController>
         [HttpGet]
         [Authorize(Policy = "ReadProducts")]
-        public IEnumerable<ReadProductModel> Get()
+        public IEnumerable<ReadProductModel> Get(bool grouped)
         {
             var userId = Convert.ToInt32(HttpContext.User.Claims.First(a => a.Type == "UserID").Value);
 
             var list = productService
-                .ListOfUserProducts(userId);
+                .ListOfUserProducts(userId,grouped);
 
-            return mapper.Map<IEnumerable<ReadProductModel>>(list);
+            var result = mapper.Map<IEnumerable<ReadProductModel>>(list);
+
+            return result;
         }
     }
 }

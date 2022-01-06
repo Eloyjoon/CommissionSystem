@@ -7,6 +7,6 @@ namespace CommissionSystem.Services.Interfaces
 {
     public interface IProductService
     {
-        IEnumerable<Entities.Product> ListOfUserProducts(int userID);
+        IEnumerable<Entities.Product> ListOfUserProducts(int userID,bool grouped);
     }
 }
