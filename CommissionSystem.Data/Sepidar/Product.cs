@@ -19,7 +19,5 @@ namespace CommissionSystem.Data.Sepidar
         public string Currency { get; set; }
         public double PriceInRials { get; set; }
         public DateTime LastUpdate { get; set; }
-
-
     }
 }

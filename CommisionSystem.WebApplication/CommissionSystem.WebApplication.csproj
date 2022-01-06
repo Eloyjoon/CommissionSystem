@@ -31,8 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CommissionSystem.Entities\CommissionSystem.Entities.csproj" />
-    <ProjectReference Include="..\CommissionSystem.Services\CommissionSystem.Services.csproj" />
+    <ProjectReference Include="..\CommissionSystem.Business\CommissionSystem.Business.csproj" />
   </ItemGroup>
 
 </Project>

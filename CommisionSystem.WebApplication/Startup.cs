@@ -1,9 +1,9 @@
 
 using AutoMapper;
+using CommissionSystem.Business.Product;
+using CommissionSystem.Business.User;
 using CommissionSystem.Data;
 using CommissionSystem.Data.Sepidar;
-using CommissionSystem.Services.Concretes;
-using CommissionSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

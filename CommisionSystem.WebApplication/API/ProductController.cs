@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommissionSystem.WebApplication.Models.ViewModels;
-using CommissionSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
+using CommissionSystem.Business.Product;
 
 namespace CommissionSystem.WebApplication.API
 {

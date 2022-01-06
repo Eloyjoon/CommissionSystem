@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using CommissionSystem.Services.Interfaces;
+using CommissionSystem.Business.User;
 using CommissionSystem.WebApplication.Models;
 using CommissionSystem.WebApplication.Models.ViewModels;
 using Microsoft.AspNetCore.Authentication;

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CommissionSystem.Business.User;
 
 namespace CommissionSystem.WebApplication
 {
@@ -29,7 +30,7 @@ namespace CommissionSystem.WebApplication
                     dest.Role,
                     opt => opt.MapFrom(src => new Entities.Role() { ID = src.RoleID }));
 
-            CreateMap<Models.ViewModels.CreateUserModel, Entities.User>()
+            CreateMap<CreateUserModel, Entities.User>()
                 .ForMember(dest =>
                     dest.Role,
                     opt => opt.MapFrom(src => new Entities.Role() { ID = src.RoleID }));

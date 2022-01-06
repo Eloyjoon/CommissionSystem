@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using CommissionSystem.WebApplication.Models.ViewModels;
-using CommissionSystem.Services.Interfaces;
 using CommissionSystem.WebApplication.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -13,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using CommissionSystem.Business.Product;
+using CommissionSystem.Business.User;
 
 namespace CommissionSystem.WebApplication.Controllers
 {
@@ -141,7 +142,7 @@ namespace CommissionSystem.WebApplication.Controllers
                 return View(input);
             }
 
-            var user = mapper.Map<Entities.User>(input);
+            var user = mapper.Map<UserDto>(input);
             var selectedBrandsList = input.Brand.Select(a => Convert.ToInt32(a)).ToList();
             var selectedPoliciesList = input.Policy.Select(a => Convert.ToInt32(a)).ToList();
 

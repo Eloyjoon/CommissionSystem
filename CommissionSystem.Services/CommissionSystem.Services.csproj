@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommissionSystem.Data\CommissionSystem.Data.csproj" />
-    <ProjectReference Include="..\CommissionSystem.Entities\CommissionSystem.Entities.csproj" />
   </ItemGroup>
 
 </Project>
