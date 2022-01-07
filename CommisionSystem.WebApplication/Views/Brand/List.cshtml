@@ -7,7 +7,7 @@
 }
 
 @inject IJsonHelper Json;
-@model List<CommissionSystem.WebApplication.Models.ViewModels.ReadBrandModel>
+@model List<CommissionSystem.Business.Product.BrandDto>
 
 <div class="col col-sm-12"">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -24,7 +24,7 @@
                 $("#brands").kendoGrid({
                     columns: [
                         { width: 300, field: "id", title: "Brand ID" },
-                        { width: 300,field: "title", title: "Name" },
+                        { width: 300,field: "name", title: "Name" },
                         //{ field: "code", title: "Extra In" },
                         //{ field: "unitsInStock", title: "Units In Stock" }
                     ],

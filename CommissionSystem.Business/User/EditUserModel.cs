@@ -1,11 +1,10 @@
-﻿using CommissionSystem.Business.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CommissionSystem.WebApplication.Models.ViewModels
+namespace CommissionSystem.Business.User
 {
     public class EditUserModel
     {
@@ -14,16 +13,16 @@ namespace CommissionSystem.WebApplication.Models.ViewModels
 
         }
 
-        public EditUserModel(UserDto user,string[] policies,string[] brands)
+        public EditUserModel(UserDto user, string[] policies, string[] brands)
         {
-            this.UserID = user.ID;
-            this.FirstName = user.FirstName;
-            this.LastName = user.LastName;
-            this.UserName = user.UserName;
-            this.Password = user.Password;
-            this.RoleID = user.Role.ID;
-            this.Policy = policies;
-            this.Brand = brands;
+            UserID = user.ID;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            UserName = user.UserName;
+            Password = user.Password;
+            RoleID = user.Role.ID;
+            Policy = policies;
+            Brand = brands;
         }
 
         public int UserID { get; set; }

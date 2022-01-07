@@ -25,13 +25,12 @@ namespace CommissionSystem.Business.User
                 .Include(a => a.Role)
                 .Include(a => a.UserPolicies)
                 .ThenInclude(a => a.Policy)
-                .Select(a => new UserDto(a))
                 .FirstOrDefaultAsync(a => a.UserName == username && a.Password == password);
 
             if (result == null)
                 return null;
             else
-                return result;
+                return new UserDto(result);
         }
         public async Task<UserDto> GetUser(int userID)
         {
@@ -75,11 +74,10 @@ namespace CommissionSystem.Business.User
             var user = await commisionContext.Users
                 .Include(a => a.Role)
                 .Include(a => a.UserPolicies)
-                .ThenInclude(a => a.Policy)
-                .Select(a=>new UserDto(a))
+                .ThenInclude(a => a.Policy)                
                 .FirstOrDefaultAsync(a => a.UserName == username);
 
-            return user;
+            return new UserDto(user);
         }
         public async Task<List<UserDto>> ListOfUsers()
         {
@@ -98,7 +96,7 @@ namespace CommissionSystem.Business.User
 
             return result;
         }
-        public async Task CreateUser(UserDto input, List<int> policyIDs, List<int> brandIDs)
+        public async Task CreateUser(CreateUserModel input, List<int> policyIDs, List<int> brandIDs)
         {
             try
             {
@@ -108,7 +106,7 @@ namespace CommissionSystem.Business.User
                     LastName = input.LastName,
                     UserName = input.UserName,
                     Password = input.Password,
-                    RoleID = input.Role.ID,
+                    RoleID = input.RoleID,
                     Status = true
                 };
 
@@ -199,14 +197,14 @@ namespace CommissionSystem.Business.User
             //}
             //return null;
         }
-        public async Task EditUser(UserDto input, List<int> brandIDs, List<int> policyIDs)
+        public async Task EditUser(EditUserModel input, List<int> brandIDs, List<int> policyIDs)
         {
             var user = commisionContext.Users
-                .First(a => a.ID == input.ID);
+                .First(a => a.ID == input.UserID);
             user.FirstName = input.FirstName;
             user.LastName = input.LastName;
             user.Password = input.Password;
-            user.RoleID = input.Role.ID;
+            user.RoleID = input.RoleID;
             commisionContext.Entry(user).State = EntityState.Modified;
             commisionContext.SaveChanges();
 

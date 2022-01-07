@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AutoMapper;
 using CommissionSystem.Business.User;
 using CommissionSystem.WebApplication.Models;
 using CommissionSystem.WebApplication.Models.ViewModels;
@@ -16,11 +15,11 @@ namespace CommissionSystem.WebApplication.API
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountApiController : BaseApiController
+    public class AccountApiController : ControllerBase
     {
         private readonly IUserService _userService;
 
-        public AccountApiController(IUserService userService,IMapper mapper):base(mapper)
+        public AccountApiController(IUserService userService)
         {
             _userService = userService;
         }
@@ -63,7 +62,7 @@ namespace CommissionSystem.WebApplication.API
         {
             var result = await _userService.ListOfUsers();
 
-            return Ok(mapper.Map<IEnumerable<ReadUserModel>>(result));
+            return Ok(result.Cast<ReadUserModel>());
         }
     }
 }

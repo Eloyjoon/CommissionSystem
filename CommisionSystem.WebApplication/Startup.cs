@@ -1,5 +1,3 @@
-
-using AutoMapper;
 using CommissionSystem.Business.Product;
 using CommissionSystem.Business.User;
 using CommissionSystem.Data;
@@ -11,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using System.Reflection;
 
 namespace CommissionSystem.WebApplication
@@ -72,15 +71,7 @@ namespace CommissionSystem.WebApplication
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen();
 
-            #region AutoMapper
-
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(Mappings)),Assembly.GetAssembly(typeof(Services.Mappings)));
-            // services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
-
-
-
-            #endregion
 
         }
 

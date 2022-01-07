@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using CommissionSystem.WebApplication.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,18 +12,18 @@ namespace CommissionSystem.WebApplication.API
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BrandController : BaseApiController
+    public class BrandController : ControllerBase
     {
         private readonly IBrandService brandService;
 
-        public BrandController(IBrandService brandService, IMapper mapper) : base(mapper)
+        public BrandController(IBrandService brandService)
         {
             this.brandService = brandService;
         }
         // GET: api/<ValuesController>
         [HttpGet]
         [Authorize/*(Policy = "ReadProductsPolicy")*/]
-        public async Task<IEnumerable<ReadBrandModel>> Get()
+        public async Task<IEnumerable<BrandDto>> Get()
         {
             var userId = Convert.ToInt32(HttpContext.User.Claims.First(a => a.Type == "UserID").Value);
 
@@ -32,7 +31,7 @@ namespace CommissionSystem.WebApplication.API
                 .ListOfUserBrands(userId))
                 .ToList();
 
-            return mapper.Map<List<ReadBrandModel>>(list);
+            return list;
         }
 
         [HttpGet("Unique")]
@@ -45,7 +44,7 @@ namespace CommissionSystem.WebApplication.API
                 .ListOfUserBrands(userId))
                 .ToList();
 
-            return mapper.Map<List<ReadBrandModel>>(list).Select(a=>new BrandFilter() { Brand=a.Title}).ToList();
+            return list.Select(a=>new BrandFilter() { Brand=a.Name}).ToList();
         }
     }
 }

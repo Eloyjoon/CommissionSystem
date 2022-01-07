@@ -19,7 +19,7 @@ namespace CommissionSystem.Business.Product
             this.commisionContext = commisionContext;
         }
 
-        private async Task<IEnumerable<ProductDto>> ListOfProducts()
+        private async Task<IEnumerable<ReadProductModel>> ListOfProducts()
         {
             var products = await sepidarContext.Products.FromSqlRaw(@"Select i.ItemID as ID,
 	   i.code,
@@ -66,12 +66,12 @@ from inv.item i
 ) as exchangeRate
 where iss.fiscalyearref = 6")
                 .Include(a => a.Brand)
-                .Select(a => new ProductDto(a))
+                .Select(a => new ReadProductModel(a))
                 .ToListAsync();
 
             return products;
         }
-        private async Task<IEnumerable<ProductDto>> ListOfProductsGrouped()
+        private async Task<IEnumerable<ReadProductModel>> ListOfProductsGrouped()
         {
             var products = await sepidarContext.Products.FromSqlRaw(@"Select i.ItemID as ID,
 	   i.code,
@@ -120,18 +120,18 @@ where iss.fiscalyearref = 6")
                 .Include(a => a.Brand)
                 .ToListAsync();
 
-            List<ProductDto> groupedList = new();
+            List<ReadProductModel> groupedList = new();
 
-            foreach (var item in products.Select(a=>new ProductDto(a)))
+            foreach (var item in products.Select(a=>new ReadProductModel(a)))
             {
                 var result = groupedList.FirstOrDefault(a => a.ID == item.ID);
                 if (result != null)
                 {
-                    result.JoinedStores += "</br>" + item.Store.Replace("انبار ", string.Empty) + " " + item.Stock;
+                    result.JoinedStores += "</br>" + item.Store.Replace("انبار ", string.Empty) + "=" + item.UnitsInStock;
                 }
                 else
                 {
-                    item.JoinedStores = item.Store.Replace("انبار ", string.Empty) + " " + item.Stock;
+                    item.JoinedStores = item.Store.Replace("انبار ", string.Empty) + "=" + item.UnitsInStock;
                     groupedList.Add(item);
                 }
             }
@@ -139,7 +139,7 @@ where iss.fiscalyearref = 6")
             return groupedList;
 
         }
-        public async Task<IEnumerable<ProductDto>> ListOfUserProducts(int userID, bool grouped)
+        public async Task<IEnumerable<ReadProductModel>> ListOfUserProducts(int userID, bool grouped)
         {
             var user = await commisionContext.Users
                 .Include(a => a.Role)

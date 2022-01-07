@@ -10,11 +10,11 @@ namespace CommissionSystem.Business.Product
     public class ProductDto
     {
         public int ID { get; set; }
-        public string Name { get; set; }
+        public string ProductName { get; set; }
         public string Code { get; set; }
         public string Store { get; set; }
-        public decimal Stock { get; set; }
-        public decimal SumStock { get; set; }
+        public int UnitsInStock { get; set; }
+        public int SumStock { get; set; }
         public BrandDto Brand { get; set; }
         public decimal Price { get; set; }
         public string Currency { get; set; }
@@ -24,11 +24,11 @@ namespace CommissionSystem.Business.Product
         public ProductDto(Data.Sepidar.Product input)
         {
             this.ID = input.ID;
-            this.Name = input.Name;
+            this.ProductName = input.Name;
             this.Code = input.Code;
             this.Store = input.Store;
-            this.Stock = input.Stock;
-            this.SumStock = input.SumStock;
+            this.UnitsInStock = Convert.ToInt32(input.Stock);
+            this.SumStock = Convert.ToInt32(input.SumStock);
             this.Brand = new BrandDto(input.Brand);
             this.Price = input.Price;
             this.Currency = input.Currency;

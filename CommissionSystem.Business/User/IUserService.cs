@@ -17,8 +17,8 @@ namespace CommissionSystem.Business.User
         Task<List<BrandDto>> GetUserBrands(int userID);
         Task<List<PolicyDto>> GetUserPolicy(int userID);
         Task<UserDto> Exist(string username);
-        Task CreateUser(UserDto input, List<int> policyIDs, List<int> brandIDs);
-        Task EditUser(UserDto input, List<int> brands, List<int> policies);
+        Task CreateUser(CreateUserModel input, List<int> policyIDs, List<int> brandIDs);
+        Task EditUser(EditUserModel input, List<int> brands, List<int> policies);
         Task<IEnumerable<RoleDto>> ListOfRoles();
         Task ChangeStatus(int userID, bool enabled);
         Task SyncUsers();

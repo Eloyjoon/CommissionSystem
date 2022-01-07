@@ -3,7 +3,6 @@ using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AutoMapper;
 using CommissionSystem.WebApplication.Models.ViewModels;
 using CommissionSystem.WebApplication.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -14,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using CommissionSystem.Business.Product;
 using CommissionSystem.Business.User;
+using Microsoft.Extensions.Logging;
 
 namespace CommissionSystem.WebApplication.Controllers
 {
@@ -21,11 +21,13 @@ namespace CommissionSystem.WebApplication.Controllers
     {
         private readonly IUserService _userService;
         private readonly IBrandService _brandService;
+        private readonly ILogger<AccountController> logger;
 
-        public AccountController(IUserService userService, IBrandService brandService, IMapper mapper) : base(mapper)
+        public AccountController(IUserService userService, IBrandService brandService,ILogger<AccountController> logger)
         {
             _userService = userService;
             _brandService = brandService;
+            this.logger = logger;
         }
 
         [HttpGet]
@@ -128,8 +130,8 @@ namespace CommissionSystem.WebApplication.Controllers
                 .ToList();
 
             ViewBag.Roles = roles;
-            ViewBag.Policies = mapper.Map<List<ReadPolicyModel>>(policies);
-            ViewBag.Brands = mapper.Map<List<ReadBrandModel>>(brands); ;
+            ViewBag.Policies = policies;
+            ViewBag.Brands = brands;
 
             return View();
         }
@@ -141,12 +143,10 @@ namespace CommissionSystem.WebApplication.Controllers
             {
                 return View(input);
             }
-
-            var user = mapper.Map<UserDto>(input);
             var selectedBrandsList = input.Brand.Select(a => Convert.ToInt32(a)).ToList();
             var selectedPoliciesList = input.Policy.Select(a => Convert.ToInt32(a)).ToList();
 
-            await _userService.CreateUser(user, selectedPoliciesList, selectedBrandsList);
+            await _userService.CreateUser(input, selectedPoliciesList, selectedBrandsList);
 
             return Redirect("/account/list");
         }
@@ -171,8 +171,8 @@ namespace CommissionSystem.WebApplication.Controllers
                 .ToList();
 
             ViewBag.Roles = roles;
-            ViewBag.Policies = mapper.Map<List<ReadPolicyModel>>(policies);
-            ViewBag.Brands = mapper.Map<List<ReadBrandModel>>(brands); ;
+            ViewBag.Policies = policies;
+            ViewBag.Brands = brands;
 
             var user = await _userService.GetUser(id);
 
@@ -209,8 +209,8 @@ namespace CommissionSystem.WebApplication.Controllers
                 .ToList();
 
             ViewBag.Roles = roles;
-            ViewBag.Policies = mapper.Map<List<ReadPolicyModel>>(policies);
-            ViewBag.Brands = mapper.Map<List<ReadBrandModel>>(brands);
+            ViewBag.Policies = policies;
+            ViewBag.Brands = brands;
 
             if (!ModelState.IsValid)
             {
@@ -223,13 +223,10 @@ namespace CommissionSystem.WebApplication.Controllers
             if (editUserModel.Brand == null)
                 editUserModel.Brand = Array.Empty<string>();
 
-
-
-            var user = mapper.Map<Entities.User>(editUserModel);
             var selectedBrandsList = editUserModel.Brand.Select(a => Convert.ToInt32(a)).ToList();
             var selectedPoliciesList = editUserModel.Policy.Select(a => Convert.ToInt32(a)).ToList();
 
-            await _userService.EditUser(user, selectedBrandsList, selectedPoliciesList);
+            await _userService.EditUser(editUserModel, selectedBrandsList, selectedPoliciesList);
 
             return Redirect("/account/list");
         }

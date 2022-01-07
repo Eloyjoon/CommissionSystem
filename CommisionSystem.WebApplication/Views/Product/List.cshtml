@@ -7,7 +7,7 @@
 }
 
 @inject IJsonHelper Json;
-@model List<CommissionSystem.WebApplication.Models.ViewModels.ReadProductModel>
+@model List<CommissionSystem.Business.Product.ReadProductModel>
 @*@Html.ActionLink("Update", "AjaxTester", new { id = "mylink",data-testc="123" })*@
 
 
@@ -58,7 +58,7 @@
                     },
                     {
                         width: 100,
-                        field: "brand",
+                        field: "brandName",
                         title: "Brand",
                         filterable: {
                             multi: true,
@@ -76,9 +76,9 @@
                     /*{ width: 100, field: "unitsInStock", title: "Stock" },*/
                     { width: 100, field: "joinedStores", title: "Store", encoded: false },
                     { width: 100, field: "sumStock", title: "All Stock" },
-                    { width: 100, field: "price", title: "Price" },
+                    { width: 100, field: "priceString", title: "Price" },
                     { width: 90, field: "currency", title: "Currency" },
-                    { width: 120, field: "priceInRials", title: "Price In Rials" },
+                    { width: 120, field: "priceInRialsString", title: "Price In Rials" },
                     /*{ width: 180, field: "lastUpdate", title: "Last Currency Update" },*/
                     { width: 300, field: "productName", title: "Product Name" }
                 ],
@@ -133,7 +133,7 @@
                     },
                     {
                         width: 100,
-                        field: "brand",
+                        field: "brandName",
                         title: "Brand",
                         filterable: {
                             multi: true,
@@ -151,9 +151,9 @@
                     { width: 100, field: "unitsInStock", title: "Stock" },
                     { width: 100, field: "store", title: "Store", encoded: false },
                 /*    { width: 100, field: "sumStock", title: "All Stock" },*/
-                    { width: 100, field: "price", title: "Price" },
+                    { width: 100, field: "priceString", title: "Price" },
                     { width: 90, field: "currency", title: "Currency" },
-                    { width: 120, field: "priceInRials", title: "Price In Rials" },
+                    { width: 120, field: "priceInRialsString", title: "Price In Rials" },
                     /*{ width: 180, field: "lastUpdate", title: "Last Currency Update" },*/
                     { width: 300, field: "productName", title: "Product Name" }
                 ],

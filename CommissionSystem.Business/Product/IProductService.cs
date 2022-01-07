@@ -5,6 +5,6 @@ namespace CommissionSystem.Business.Product
 {
     public interface IProductService
     {
-        Task<IEnumerable<ProductDto>> ListOfUserProducts(int userID, bool grouped);
+        Task<IEnumerable<ReadProductModel>> ListOfUserProducts(int userID, bool grouped);
     }
 }
