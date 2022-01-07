@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System;
 using System.Reflection;
 
 namespace CommissionSystem.WebApplication
@@ -58,8 +59,8 @@ namespace CommissionSystem.WebApplication
 
 
             services.AddDbContext<SepidarContext>(
-                options => options.UseSqlServer("name=ConnectionStrings:SepidarConnection",
-            sqlServerOptions => sqlServerOptions.CommandTimeout(1000))
+                options => options.UseSqlServer(Environment.GetEnvironmentVariable("SepidarConnection",EnvironmentVariableTarget.Machine),
+                sqlServerOptions => sqlServerOptions.CommandTimeout(1000))
             );
 
             services.AddRazorPages()
